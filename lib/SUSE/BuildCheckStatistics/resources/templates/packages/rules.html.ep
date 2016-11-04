@@ -1,0 +1,32 @@
+% layout 'tabular';
+% title "$project-$arch-$repo";
+<table class="tablesorter">
+  <thead>
+    <tr>
+      <th>
+        <form>
+          <input autofocus name="filter" onkeyup="tablefilter(this)"
+            placeholder="Filter" type="text">
+        </form>
+      </th>
+      <th colspan="2"><%= title %></th>
+    </tr>
+    <tr>
+      <th>Rule<span class="arrow"></span></th>
+      <th>Type<span class="arrow"></span></th>
+      <th>Packages<span class="arrow"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    % for my $rule (@$rules) {
+      <tr>
+        <td><%= $rule->{rule} %></td>
+        <td class="<%= $rule->{type} %>s"><%= $rule->{type} %></td>
+        <td>
+          <%= link_to_repo $project, $arch, $repo, $rule->{packages},
+            $rule->{rule} %>
+        </td>
+      </tr>
+    % }
+  </tbody>
+</table>

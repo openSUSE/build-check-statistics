@@ -1,0 +1,50 @@
+% layout 'tabular';
+% title join('-', $pkg->@{qw(project arch repository)}) . ": $pkg->{package}";
+<table class="tablesorter">
+  <thead>
+    <tr>
+      <th>
+        <form>
+          <input autofocus name="filter" onkeyup="tablefilter(this)"
+            placeholder="Filter" type="text">
+        </form>
+      </th>
+      <th colspan="2"><%= title %></th>
+    </tr>
+    <tr>
+      <th>Rule<span class="arrow"></span></th>
+      <th>Type<span class="arrow"></span></th>
+      <th>Others<span class="arrow"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    % for my $error ($pkg->{errors}->@*) {
+      <tr>
+        <td>
+          <%= link_to $error => log => {id => $pkg->{id}},
+            target => '_blank' %>
+        </td>
+        <td class="errors">error</td>
+        <td>
+          <%= link_to_repo $pkg->@{qw(project arch repository)},
+            scalar $pkg->{rules}{$error}->@* - 1, $error %>
+        </td>
+      </tr>
+    % }
+    % for my $warning ($pkg->{warnings}->@*) {
+      <tr>
+        <td>
+          <%= link_to log => {id => $pkg->{id}},
+            target => '_blank' => begin %>
+            <%= $warning %>
+          <% end %>
+        </td>
+        <td class="warnings">warning</td>
+        <td>
+          <%= link_to_repo $pkg->@{qw(project arch repository)},
+            scalar $pkg->{rules}{$warning}->@* - 1, $warning %>
+        </td>
+      </tr>
+    % }
+  </tbody>
+</table>

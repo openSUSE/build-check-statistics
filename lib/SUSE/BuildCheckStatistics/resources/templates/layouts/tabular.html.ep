@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Build Check Statistics: <%= title %></title>
+    %= javascript '/jquery.js'
+    %= javascript '/tablefilter.js'
+    %= javascript '/jquery.tablesorter.js'
+    <script>
+      $(document).ready(function () {
+        $('form').submit(function() { return false });
+        $('table').bind('sortEnd', function() {
+          tablefilter(document.querySelector('input'));
+        });
+        $('table').tablesorter({
+          headers: {
+            0: {sorter: false},
+            1: {sorter: false }
+          },
+          sortList: [[0,0]]
+        });
+        $('table th:first-child').click(function() {
+          $('thead input').focus();
+        });
+      });
+    </script>
+    %= stylesheet '/site.css'
+  </head>
+  <body>
+    <div id=wrapper>
+      <div id="header">
+        <div id="logo">
+          %= image '/opensuse-logo.png'
+        </div>
+        <div id="product"><%= link_to 'Build Check Statistics' => '/' %></div>
+      </div>
+      <%= content %>
+    </div>
+  <body>
+</html>

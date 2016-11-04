@@ -1,0 +1,42 @@
+% layout 'tabular';
+% my $rule = param 'rule';
+% title "$project-$arch-$repo" . ($rule ? ": $rule" : '');
+<table class="tablesorter">
+  <thead>
+    <tr>
+      <th>
+        <form>
+          <input autofocus name="filter" onkeyup="tablefilter(this)"
+            placeholder="Filter" type="text">
+        </form>
+      </th>
+      <th colspan="3"><%= title %></th>
+    </tr>
+    <tr>
+      <th>Package<span class="arrow"></span></th>
+      <th>State<span class="arrow"></span></th>
+      <th>Errors<span class="arrow"></span></th>
+      <th>Warnings<span class="arrow"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    % for my $p ($pkgs->@*) {
+      <tr>
+        <td>
+          %= link_to info => {id => $p->{id}} => begin
+            <%= $p->{package} %>
+          % end
+        </td>
+        <td><%= $p->{code} %></td>
+        % my $errors = scalar $p->{errors}->@*;
+        %= t 'td', scalar $errors ? (class => 'errors') : () => begin
+          <%= $errors %>
+        % end
+        % my $warnings = scalar $p->{warnings}->@*;
+        %= t 'td', scalar $warnings ? (class => 'warnings') : () => begin
+          <%= $warnings %>
+        % end
+      </tr>
+    % }
+  </tbody>
+</table>

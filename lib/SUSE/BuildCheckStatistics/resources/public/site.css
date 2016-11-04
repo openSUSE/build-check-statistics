@@ -1,0 +1,94 @@
+body {
+  background-color: #173f4f;
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 50px;
+}
+table {
+  background: #ffffff;
+  border-collapse: collapse;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  width: 800px;
+}
+th {
+  color: #c5cfd3;
+  background: #1b1e24;
+  border-bottom: 4px solid #9ea7af;
+  font-size: 16px;
+  font-weight: 100;
+  padding: 24px;
+  padding-left: 15px;
+  text-align: left;
+  text-transform: uppercase;
+}
+th input {
+  border: none;
+  padding: 10px;
+  width: 100%;
+}
+th input:focus { outline: none;}
+tr:first-child th { border-bottom: none }
+tr:first-child th:last-child {
+  font-family: 'Open Sans Condensed Light', sans-serif;
+  font-size: 20px;
+  padding-right: 11px;
+  text-align: right;
+  text-transform: none;
+}
+th.header span:after         { content: ' ▴' }
+th.header span               { visibility: hidden }
+th.headerSortDown span:after { content: ' ▴' }
+th.headerSortDown span       { visibility: visible }
+th.headerSortUp span:after   { content: ' ▾' }
+th.headerSortUp span         { visibility: visible }
+tr {
+  border-bottom: 1px solid #dddddd;
+  color: #666b85;
+  font-size: 16px;
+  font-weight: normal;
+}
+thead tr:first-child { border-bottom: none }
+td {
+  padding: 15px;
+  text-align: left;
+  vertical-align: middle;
+}
+td a {
+  color: #00a489;
+  text-decoration: none;
+}
+#header {
+  font-size: 20px;
+  font-weight: normal;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#logo {
+  float: left;
+  line-height: 50px
+}
+#product {
+  float: right;
+  line-height: 50px;
+}
+#product a {
+  color: #4ac0b4;
+  font-family: 'Open Sans Condensed Light', sans-serif;
+  font-size: 38px;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+#wrapper {
+  margin: 0 auto;
+  max-width: 800px;
+}
+.arrow {
+  color: #9ea7af;
+  font-size: 20px;
+  font-weight: bold;
+}
+.errors { color: #ff7878 }
+.invisible { display: none }
+.odd { background: #f9f9f9 }
+.warnings { color: #81c13b }
