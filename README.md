@@ -11,7 +11,7 @@
 
   All you need is a one-liner, it takes less than a minute.
 
-    $ curl -L https://cpanmin.us | perl - -n cpanm git://github.com/openSUSE/build-check-statistics.git@master
+    $ curl -L https://cpanmin.us | perl - -n git://github.com/openSUSE/build-check-statistics.git@master
 
   We recommend the use of a [Perlbrew](http://perlbrew.pl) environment.
 
