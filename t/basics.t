@@ -28,6 +28,12 @@ use Mojo::Server::Daemon;
 use Mojolicious::Lite;
 use Test::Mojo;
 
+under sub ($c) {
+  $c->render(data => 'Authorization required!', status => 401) and return undef
+    unless $c->req->url->to_abs->userinfo eq 'tester:testing';
+  return 1;
+};
+
 get '/build/Foo/_result' => sub ($c) {
   $c->render(data => <<'EOF');
 <resultlist state="d2849004daf01a865181a1784e8a0980">
@@ -78,6 +84,8 @@ get '/build/Foo/Bar/x86_64/yada/rpmlint.log' => sub ($c) {
   $c->render(data => "baz-0.i586: W: no-rpm-opt-flags\n");
 };
 
+any '/*' => {'' => '', data => 'Not found!', status => 404};
+
 # OBS test server
 my $daemon
   = Mojo::Server::Daemon->new(app => app, listen => ['http://127.0.0.1'])
@@ -103,6 +111,11 @@ $app->ua->ioloop(Mojo::IOLoop->singleton);
 my $db = $app->sqlite->db;
 is $db->query('select count(*) from staging')->array->[0],  0, 'no packages';
 is $db->query('select count(*) from packages')->array->[0], 0, 'no packages';
+{
+  local $app->config->{username} = 'wrong';
+  eval { $app->updater->silent(1)->update };
+  like $@, qr/Authorization required/, 'right error';
+}
 $app->updater->silent(1)->update;
 is $db->query('select count(*) from staging')->array->[0],  4, 'four packages';
 is $db->query('select count(*) from packages')->array->[0], 0, 'no packages';

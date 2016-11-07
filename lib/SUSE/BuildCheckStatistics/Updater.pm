@@ -81,8 +81,12 @@ sub update ($self) {
 sub _fetch ($self, $url) {
   my $tx = $self->app->ua->get($url);
   if (my $res = $tx->success) { return $res }
+
   my $err = $tx->error;
-  return undef if $err->{code};
+  if (my $code = $err->{code}) {
+    die "Authorization required.\n" if $code eq '401';
+    return undef;
+  }
   die "Connection error: $err->{message}";
 }
 
