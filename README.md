@@ -45,5 +45,5 @@ $ build_check_statistics deploy
 
 Start the web server.
 ```
-$ build_check_statistics daemon
+$ build_check_statistics daemon -m production
 ```
