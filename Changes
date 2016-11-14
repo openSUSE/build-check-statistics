@@ -1,4 +1,7 @@
 
+1.02  2016-11-14
+  - Fixed a few Perl 5.10.1 support bugs.
+
 1.01  2016-11-14
   - Added support for Perl 5.10.1.
 

@@ -34,7 +34,7 @@ has updater => sub {
   return $updater;
 };
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 sub startup {
   my $self = shift;
@@ -46,7 +46,7 @@ sub startup {
   $self->renderer->paths->[0] = $home->rel_dir('templates');
 
   # Application specific commands
-  push $self->commands->namespaces->@*, 'SUSE::BuildCheckStatistics::Command';
+  push @{$self->commands->namespaces}, 'SUSE::BuildCheckStatistics::Command';
 
   # Our user agent needs to receive huge log files
   $self->ua->on(start => sub { pop->res->max_message_size(134217728) });

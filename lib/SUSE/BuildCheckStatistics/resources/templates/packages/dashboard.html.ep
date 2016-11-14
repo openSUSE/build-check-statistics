@@ -20,7 +20,7 @@
   </thead>
   <tbody>
     % for my $r (@$stats) {
-      % my ($project, $arch, $repo) = $r->@{qw(project arch repository)};
+      % my ($project, $arch, $repo) = @{$r}{qw(project arch repository)};
       <tr>
         <td>
           % if ($r->{errors} || $r->{warnings}) {

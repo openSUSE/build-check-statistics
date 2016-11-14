@@ -29,7 +29,7 @@ has silent => 0;
 sub base {
   my $self = shift;
   my ($proto, $username, $password, $host)
-    = $self->app->config->@{qw(protocol username password host)};
+    = @{$self->app->config}{qw(protocol username password host)};
   return "$proto://$username:$password\@$host";
 }
 
@@ -43,9 +43,9 @@ sub update {
 
   # Repositories for projects
   my @repos;
-  for my $project ($app->config->{projects}->@*) {
+  for my $project (@{$app->config->{projects}}) {
     next unless my $res = $self->_fetch("$base/build/$project/_result");
-    push @repos, [$project, $_->@{qw(arch repository)}]
+    push @repos, [$project, @{$_}{qw(arch repository)}]
       for $res->dom->find('result')->each;
   }
 

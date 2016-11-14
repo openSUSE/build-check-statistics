@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    % for my $p ($pkgs->@*) {
+    % for my $p (@$pkgs) {
       <tr>
         <td>
           %= link_to info => {id => $p->{id}} => begin
@@ -28,11 +28,11 @@
           % end
         </td>
         <td><%= $p->{code} %></td>
-        % my $errors = scalar $p->{errors}->@*;
+        % my $errors = scalar @{$p->{errors}};
         %= t 'td', scalar $errors ? (class => 'errors') : () => begin
           <%= $errors %>
         % end
-        % my $warnings = scalar $p->{warnings}->@*;
+        % my $warnings = scalar @{$p->{warnings}};
         %= t 'td', scalar $warnings ? (class => 'warnings') : () => begin
           <%= $warnings %>
         % end

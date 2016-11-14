@@ -34,8 +34,8 @@ sub info {
 sub log {
   my $self = shift;
   my ($arch, $pkg, $project, $repo)
-    = $self->packages->pkg_for_id($self->stash('id'))
-    ->@{qw(arch package project repository)};
+    = @{$self->packages->pkg_for_id($self->stash('id'))}
+    {qw(arch package project repository)};
 
   my $base = $self->app->updater->base;
   $self->ua->get(
@@ -51,9 +51,9 @@ sub repo {
   my $self = shift;
 
   my $pkgs
-    = $self->packages->pkgs_for_repo($self->stash->@{qw(project arch repo)},
+    = $self->packages->pkgs_for_repo(@{$self->stash}{qw(project arch repo)},
     $self->param('rule'));
-  @$pkgs = grep { !!$_->{errors}->@* || !!$_->{warnings}->@* } $pkgs->@*;
+  @$pkgs = grep { !!@{$_->{errors}} || !!@{$_->{warnings}} } @$pkgs;
 
   $self->render(pkgs => $pkgs);
 }
@@ -61,7 +61,7 @@ sub repo {
 sub rules {
   my $self = shift;
   my $rules
-    = $self->packages->rules_for_repo($self->stash->@{qw(project arch repo)});
+    = $self->packages->rules_for_repo(@{$self->stash}{qw(project arch repo)});
   $self->render(rules => $rules);
 }
 

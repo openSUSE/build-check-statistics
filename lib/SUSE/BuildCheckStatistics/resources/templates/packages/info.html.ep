@@ -1,5 +1,5 @@
 % layout 'tabular';
-% title join('-', $pkg->@{qw(project arch repository)}) . ": $pkg->{package}";
+% title join('-', @{$pkg}{qw(project arch repository)}) . ": $pkg->{package}";
 <table class="tablesorter">
   <thead>
     <tr>
@@ -18,7 +18,7 @@
     </tr>
   </thead>
   <tbody>
-    % for my $error ($pkg->{errors}->@*) {
+    % for my $error (@{$pkg->{errors}}) {
       <tr>
         <td>
           <%= link_to $error => log => {id => $pkg->{id}},
@@ -26,12 +26,12 @@
         </td>
         <td class="errors">error</td>
         <td>
-          <%= link_to_repo $pkg->@{qw(project arch repository)},
-            scalar $pkg->{rules}{$error}->@* - 1, $error %>
+          <%= link_to_repo @{$pkg}{qw(project arch repository)},
+            scalar @{$pkg->{rules}{$error}} - 1, $error %>
         </td>
       </tr>
     % }
-    % for my $warning ($pkg->{warnings}->@*) {
+    % for my $warning (@{$pkg->{warnings}}) {
       <tr>
         <td>
           <%= link_to log => {id => $pkg->{id}},
@@ -41,8 +41,8 @@
         </td>
         <td class="warnings">warning</td>
         <td>
-          <%= link_to_repo $pkg->@{qw(project arch repository)},
-            scalar $pkg->{rules}{$warning}->@* - 1, $warning %>
+          <%= link_to_repo @{$pkg}{qw(project arch repository)},
+            scalar @{$pkg->{rules}{$warning}} - 1, $warning %>
         </td>
       </tr>
     % }

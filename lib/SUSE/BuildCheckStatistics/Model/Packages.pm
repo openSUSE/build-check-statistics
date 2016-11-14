@@ -47,10 +47,10 @@ sub pkg_for_id {
   my $hash = $db->query('select * from packages where id = ?', $id)
     ->expand(json => [qw(errors warnings)])->hash;
 
-  my ($project, $arch, $repo) = $hash->@{qw(project arch repository)};
+  my ($project, $arch, $repo) = @{$hash}{qw(project arch repository)};
   $hash->{rules} = {
     map { $_ => $self->_pkgs_for_rule($project, $arch, $repo, $_) }
-    map {@$_} $hash->@{qw(errors warnings)},
+    map {@$_} @{$hash}{qw(errors warnings)},
   };
 
   return $hash;
