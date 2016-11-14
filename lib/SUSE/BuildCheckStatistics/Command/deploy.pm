@@ -20,9 +20,6 @@
 package SUSE::BuildCheckStatistics::Command::deploy;
 use Mojo::Base 'Mojolicious::Command';
 
-use 5.24.0;
-use experimental 'signatures';
-
-sub run ($self) { $self->app->packages->deploy }
+sub run { shift->app->packages->deploy }
 
 1;

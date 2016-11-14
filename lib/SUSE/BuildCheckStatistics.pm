@@ -20,9 +20,6 @@
 package SUSE::BuildCheckStatistics;
 use Mojo::Base 'Mojolicious';
 
-use 5.24.0;
-use experimental 'signatures';
-
 use File::Basename 'dirname';
 use File::Spec::Functions 'catdir';
 use Mojo::SQLite;
@@ -30,15 +27,17 @@ use Scalar::Util 'weaken';
 use SUSE::BuildCheckStatistics::Model::Packages;
 use SUSE::BuildCheckStatistics::Updater;
 
-has updater => sub ($self) {
+has updater => sub {
+  my $self = shift;
   my $updater = SUSE::BuildCheckStatistics::Updater->new(app => $self);
   weaken $updater->{app};
   return $updater;
 };
 
-our $VERSION = '1.0';
+our $VERSION = '1.01';
 
-sub startup ($self) {
+sub startup {
+  my $self = shift;
 
   # Switch to installable home directory
   my $home = $self->home;
@@ -65,9 +64,9 @@ sub startup ($self) {
   $self->helper(
     sqlite => sub { state $sqlite = Mojo::SQLite->new($config->{sqlite}) });
   $self->helper(
-    packages => sub ($c) {
+    packages => sub {
       state $pkgs = SUSE::BuildCheckStatistics::Model::Packages->new(
-        sqlite => $c->sqlite);
+        sqlite => shift->sqlite);
     }
   );
 

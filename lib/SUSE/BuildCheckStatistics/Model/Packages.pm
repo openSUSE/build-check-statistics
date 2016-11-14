@@ -20,16 +20,14 @@
 package SUSE::BuildCheckStatistics::Model::Packages;
 use Mojo::Base -base;
 
-use 5.24.0;
-use experimental 'signatures';
-
 has 'sqlite';
 
-sub cleanup ($self) { $self->sqlite->db->query('delete from staging') }
+sub cleanup { shift->sqlite->db->query('delete from staging') }
 
-sub deploy ($self) {
+sub deploy {
+  my $self = shift;
+
   my $db = $self->sqlite->db;
-
   my $tx = $db->begin;
   $db->query('delete from packages');
   $db->query(
@@ -42,7 +40,9 @@ sub deploy ($self) {
   $tx->commit;
 }
 
-sub pkg_for_id ($self, $id) {
+sub pkg_for_id {
+  my ($self, $id) = @_;
+
   my $db = $self->sqlite->db;
   my $hash = $db->query('select * from packages where id = ?', $id)
     ->expand(json => [qw(errors warnings)])->hash;
@@ -56,9 +56,10 @@ sub pkg_for_id ($self, $id) {
   return $hash;
 }
 
-sub pkgs_for_repo ($self, $project, $arch, $repo, $rule = undef) {
-  my $db = $self->sqlite->db;
+sub pkgs_for_repo {
+  my ($self, $project, $arch, $repo, $rule) = @_;
 
+  my $db     = $self->sqlite->db;
   my $errors = $db->query(
     'select packages.id, package, code, errors, warnings from packages,
        json_each(packages.errors)
@@ -80,15 +81,17 @@ sub pkgs_for_repo ($self, $project, $arch, $repo, $rule = undef) {
   return [values $pkgs->%*];
 }
 
-sub last_updated ($self) {
+sub last_updated {
+  my $self  = shift;
   my $array = $self->sqlite->db->query(
     'select updated from packages order by updated desc limit 1')->array;
   return $array ? $array->[0] : undef;
 }
 
-sub rules_for_repo ($self, $project, $arch, $repo) {
-  my $db = $self->sqlite->db;
+sub rules_for_repo {
+  my ($self, $project, $arch, $repo) = @_;
 
+  my $db    = $self->sqlite->db;
   my @rules = $db->query(
     "select e.value as rule, count(package) as packages, 'error' as type
      from packages, json_each(packages.errors) as e
@@ -106,7 +109,8 @@ sub rules_for_repo ($self, $project, $arch, $repo) {
   return \@rules;
 }
 
-sub stage ($self, $project, $repo, $arch, $pkg, $code, $log) {
+sub stage {
+  my ($self, $project, $repo, $arch, $pkg, $code, $log) = @_;
   $self->sqlite->db->query(
     'insert into staging (
        arch, code, errors, package, project, repository, warnings)
@@ -115,8 +119,8 @@ sub stage ($self, $project, $repo, $arch, $pkg, $code, $log) {
   );
 }
 
-sub stats ($self) {
-  $self->sqlite->db->query(
+sub stats {
+  shift->sqlite->db->query(
     'select project, arch, repository, count(package) as packages,
        sum(json_array_length(errors)) as errors,
        sum(json_array_length(warnings)) as warnings
@@ -124,9 +128,10 @@ sub stats ($self) {
   )->hashes;
 }
 
-sub _pkgs_for_rule ($self, $project, $arch, $repo, $rule) {
-  my $db = $self->sqlite->db;
+sub _pkgs_for_rule {
+  my ($self, $project, $arch, $repo, $rule) = @_;
 
+  my $db       = $self->sqlite->db;
   my @packages = $db->query(
     'select package from packages, json_each(packages.errors)
      where project = ? and arch = ? and repository = ?

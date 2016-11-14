@@ -16,7 +16,7 @@ WriteMakefile(
     dynamic_config => 0,
     'meta-spec'    => {version => 2},
     no_index       => {directory => ['t']},
-    prereqs        => {runtime => {requires => {perl => '5.024000'}}},
+    prereqs        => {runtime => {requires => {perl => '5.010001'}}},
     resources      => {
       bugtracker =>
         {web => 'https://github.com/openSUSE/build-check-statistics/issues'},
@@ -30,7 +30,10 @@ WriteMakefile(
       x_IRC => 'irc://irc.freenode.org/#suse'
     },
   },
-  PREREQ_PM =>
-    {Mojolicious => '7.08', 'Mojo::SQLite' => 0, 'Term::ProgressBar' => 0},
+  PREREQ_PM => {
+    Mojolicious         => '7.08',
+    'Mojo::SQLite'      => '1.000',
+    'Term::ProgressBar' => '2.17'
+  },
   test => {TESTS => 't/*.t t/*/*.t'}
 );

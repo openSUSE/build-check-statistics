@@ -19,23 +19,20 @@
 # SOFTWARE.
 use Mojo::Base -strict;
 
-use 5.24.0;
-use experimental 'signatures';
-
 use Test::More;
 
 use Mojo::Server::Daemon;
 use Mojolicious::Lite;
 use Test::Mojo;
 
-under sub ($c) {
+under sub {
+  my $c = shift;
   $c->render(data => 'Authorization required!', status => 401) and return undef
     unless $c->req->url->to_abs->userinfo eq 'tester:testing';
   return 1;
 };
 
-get '/build/Foo/_result' => sub ($c) {
-  $c->render(data => <<'EOF');
+get '/build/Foo/_result' => {data => <<'EOF'};
 <resultlist state="d2849004daf01a865181a1784e8a0980">
   <result project="Foo" repository="Bar" arch="i586">
     <status package="baz" code="succeeded" />
@@ -47,42 +44,35 @@ get '/build/Foo/_result' => sub ($c) {
   </result>
 </resultlist>
 EOF
-};
 
-get '/build/Foo/Bar/i586/_jobhistory' => sub ($c) {
-  $c->render(data => <<'EOF');
+get '/build/Foo/Bar/i586/_jobhistory' => {data => <<'EOF'};
 <jobhistlist>
     <jobhist package="baz" code="failed" />
     <jobhist package="baz" code="succeeded" />
     <jobhist package="yada" code="succeeded" />
 </jobhistlist>
 EOF
-};
 
-get '/build/Foo/Bar/x86_64/_jobhistory' => sub ($c) {
-  $c->render(data => <<'EOF');
+get '/build/Foo/Bar/x86_64/_jobhistory' => {data => <<'EOF'};
 <jobhistlist>
     <jobhist package="baz" code="succeeded" />
     <jobhist package="yada" code="failed" />
 </jobhistlist>
 EOF
-};
 
-get '/build/Foo/Bar/i586/baz/rpmlint.log' => sub ($c) {
-  $c->render(data => <<'EOF');
+get '/build/Foo/Bar/i586/baz/rpmlint.log' => {data => <<'EOF'};
 baz-0.i586: W: no-rpm-opt-flags
 baz-0.i586: E: test-123
 baz-0.i586: W: whatever
 EOF
-};
 
-get '/build/Foo/Bar/i586/yada/rpmlint.log' => sub ($c) {
-  $c->render(data => "baz-0.i586: W: no-rpm-opt-flags\n");
-};
+get '/build/Foo/Bar/i586/yada/rpmlint.log' => {data => <<'EOF'};
+baz-0.i586: W: no-rpm-opt-flags
+EOF
 
-get '/build/Foo/Bar/x86_64/yada/rpmlint.log' => sub ($c) {
-  $c->render(data => "baz-0.i586: W: no-rpm-opt-flags\n");
-};
+get '/build/Foo/Bar/x86_64/yada/rpmlint.log' => {data => <<'EOF'};
+baz-0.i586: W: no-rpm-opt-flags
+EOF
 
 any '/*' => {'' => '', data => 'Not found!', status => 404};
 

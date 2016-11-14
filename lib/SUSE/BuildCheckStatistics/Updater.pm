@@ -20,22 +20,22 @@
 package SUSE::BuildCheckStatistics::Updater;
 use Mojo::Base -base;
 
-use 5.24.0;
-use experimental 'signatures';
-
 use SUSE::BuildCheckStatistics::Util;
 use Term::ProgressBar;
 
 has 'app';
 has silent => 0;
 
-sub base ($self) {
+sub base {
+  my $self = shift;
   my ($proto, $username, $password, $host)
     = $self->app->config->@{qw(protocol username password host)};
   return "$proto://$username:$password\@$host";
 }
 
-sub update ($self) {
+sub update {
+  my $self = shift;
+
   my $app      = $self->app;
   my $packages = $app->packages;
   $packages->cleanup;
@@ -78,7 +78,9 @@ sub update ($self) {
   }
 }
 
-sub _fetch ($self, $url) {
+sub _fetch {
+  my ($self, $url) = @_;
+
   my $tx = $self->app->ua->get($url);
   if (my $res = $tx->success) { return $res }
 

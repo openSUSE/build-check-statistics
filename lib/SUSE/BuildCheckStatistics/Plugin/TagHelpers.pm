@@ -20,13 +20,12 @@
 package SUSE::BuildCheckStatistics::Plugin::TagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
 
-use 5.24.0;
-use experimental 'signatures';
-
-sub register ($self, $app, $conf) {
+sub register {
+  my ($self, $app) = @_;
 
   $app->helper(
-    link_to_repo => sub ($c, $project, $arch, $repo, $num, $rule = undef) {
+    link_to_repo => sub {
+      my ($c, $project, $arch, $repo, $num, $rule) = @_;
       my $text = $c->helpers->one_or_more_packages($num);
       my $url  = $c->url_for(
         repo => {project => $project, arch => $arch, repo => $repo});
@@ -34,7 +33,8 @@ sub register ($self, $app, $conf) {
     }
   );
   $app->helper(
-    one_or_more_packages => sub ($c, $num) {
+    one_or_more_packages => sub {
+      my ($c, $num) = @_;
       return '0 packages' if $num == 0;
       return $num == 1 ? "1 package" : "$num packages";
     }

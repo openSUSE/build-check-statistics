@@ -1,2 +1,6 @@
+
+1.01  2016-11-14
+  - Added support for Perl 5.10.1.
+
 1.0  2016-11-07
   - First release.

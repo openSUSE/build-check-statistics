@@ -20,41 +20,46 @@
 package SUSE::BuildCheckStatistics::Controller::Packages;
 use Mojo::Base 'Mojolicious::Controller';
 
-use 5.24.0;
-use experimental 'signatures';
-
-sub dashboard ($self) {
+sub dashboard {
+  my $self     = shift;
   my $packages = $self->packages;
   $self->render(stats => $packages->stats, updated => $packages->last_updated);
 }
 
-sub info ($self) {
+sub info {
+  my $self = shift;
   $self->render(pkg => $self->packages->pkg_for_id($self->stash('id')));
 }
 
-sub log ($self) {
+sub log {
+  my $self = shift;
   my ($arch, $pkg, $project, $repo)
     = $self->packages->pkg_for_id($self->stash('id'))
     ->@{qw(arch package project repository)};
 
   my $base = $self->app->updater->base;
   $self->ua->get(
-    "$base/build/$project/$repo/$arch/$pkg/rpmlint.log" => sub ($ua, $tx) {
+    "$base/build/$project/$repo/$arch/$pkg/rpmlint.log" => sub {
+      my ($ua, $tx) = @_;
       my $res = $tx->res;
       $self->render(data => $res->body, status => $res->code, format => 'txt');
     }
   );
 }
 
-sub repo ($self) {
+sub repo {
+  my $self = shift;
+
   my $pkgs
     = $self->packages->pkgs_for_repo($self->stash->@{qw(project arch repo)},
     $self->param('rule'));
   @$pkgs = grep { !!$_->{errors}->@* || !!$_->{warnings}->@* } $pkgs->@*;
+
   $self->render(pkgs => $pkgs);
 }
 
-sub rules ($self) {
+sub rules {
+  my $self = shift;
   my $rules
     = $self->packages->rules_for_repo($self->stash->@{qw(project arch repo)});
   $self->render(rules => $rules);

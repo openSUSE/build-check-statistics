@@ -20,9 +20,6 @@
 package SUSE::BuildCheckStatistics::Command::update;
 use Mojo::Base 'Mojolicious::Command';
 
-use 5.24.0;
-use experimental 'signatures';
-
-sub run ($self) { $self->app->updater->update }
+sub run { shift->app->updater->update }
 
 1;

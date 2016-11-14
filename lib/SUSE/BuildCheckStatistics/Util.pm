@@ -18,11 +18,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 package SUSE::BuildCheckStatistics::Util;
+use Mojo::Base -strict;
 
-use 5.24.0;
-use experimental 'signatures';
-
-sub parse_log ($log) {
+sub parse_log {
+  my $log = shift;
 
   my (%errors, %warnings);
   while ($log =~ /^\S+ (E|W): (\S+)(?:$| )/gm) {
