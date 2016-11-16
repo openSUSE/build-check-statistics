@@ -21,8 +21,8 @@ Just create a configuration file under `/etc/build_check_statistics.conf`.
 
 ```
 {
-  username => 'tester',
-  password => 'testing',
+  username => 'obs_user',
+  password => 'obs_password',
   protocol => 'https',
   host     => 'api.opensuse.org',
   projects => ['SomeProject', 'AnotherProject'],
