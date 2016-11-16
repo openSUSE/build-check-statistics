@@ -43,6 +43,8 @@ $ build_check_statistics update
 $ build_check_statistics deploy
 ```
 
+![Screenshot2](https://raw.githubusercontent.com/openSUSE/build-check-statistics/master/screenshot2.png)
+
 Start the web server.
 ```
 $ build_check_statistics daemon -m production
