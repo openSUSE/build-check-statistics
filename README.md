@@ -21,12 +21,15 @@ Just create a configuration file under `/etc/build_check_statistics.conf`.
 
 ```
 {
-  username => 'obs_user',
-  password => 'obs_password',
-  protocol => 'https',
-  host     => 'api.opensuse.org',
-  projects => ['SomeProject', 'AnotherProject'],
-  sqlite   => 'sqlite:test.db'
+  username  => 'obs_user',
+  password  => 'obs_password',
+  protocol  => 'https',
+  host      => 'api.opensuse.org',
+  projects  => ['SomeProject', 'AnotherProject'],
+  sqlite    => 'sqlite:test.db',
+  hypnotoad => {
+    pid_file => '/var/run/build_check_statistics.pid'
+  }
 }
 ```
 

@@ -1,0 +1,13 @@
+[Unit]
+Description=Build Check Statistics
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/build_check_statistics.pid
+ExecStart=/usr/bin/hypnotoad /usr/bin/build_check_statistics
+ExecReload=/usr/bin/hypnotoad /usr/bin/build_check_statistics
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

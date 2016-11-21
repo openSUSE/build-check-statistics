@@ -1,0 +1,5 @@
+[Unit]
+Description=Build Check Statistics Daily Update Timer
+
+[Timer]
+OnCalendar=02:00:00

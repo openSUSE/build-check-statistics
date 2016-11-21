@@ -1,5 +1,6 @@
 
-1.03  2016-11-16
+1.03  2016-11-21
+  - Added systemd unit files.
 
 1.02  2016-11-14
   - Fixed a few Perl 5.10.1 support bugs.

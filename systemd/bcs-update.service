@@ -1,0 +1,6 @@
+[Unit]
+Description=Build Check Statistics Update
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/build_check_statistics update ; /usr/bin/build_check_statistics deploy
