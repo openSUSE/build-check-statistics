@@ -37,9 +37,9 @@ sub log {
     = @{$self->packages->pkg_for_id($self->stash('id'))}
     {qw(arch package project repository)};
 
-  my $base = $self->app->updater->base;
+  my $obs = $self->app->config->{obs};
   $self->ua->get(
-    "$base/build/$project/$repo/$arch/$pkg/rpmlint.log" => sub {
+    "$obs/build/$project/$repo/$arch/$pkg/rpmlint.log" => sub {
       my ($ua, $tx) = @_;
       my $res = $tx->res;
       $self->render(data => $res->body, status => $res->code, format => 'txt');

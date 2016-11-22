@@ -25,13 +25,6 @@ use Mojo::Server::Daemon;
 use Mojolicious::Lite;
 use Test::Mojo;
 
-under sub {
-  my $c = shift;
-  $c->render(data => 'Authorization required!', status => 401) and return undef
-    unless $c->req->url->to_abs->userinfo eq 'tester:testing';
-  return 1;
-};
-
 get '/build/Foo/_result' => {data => <<'EOF'};
 <resultlist state="d2849004daf01a865181a1784e8a0980">
   <result project="Foo" repository="Bar" arch="i586">
@@ -84,14 +77,8 @@ my $port = Mojo::IOLoop->acceptor($daemon->acceptors->[0])->port;
 
 # No data yet
 my $t      = Test::Mojo->new('SUSE::BuildCheckStatistics');
-my $config = {
-  username => 'tester',
-  password => 'testing',
-  protocol => 'http',
-  host     => "127.0.0.1:$port",
-  projects => ['Foo'],
-};
-my $app = $t->app;
+my $config = {obs => "http://127.0.0.1:$port", projects => ['Foo']};
+my $app    = $t->app;
 $app->config($config);
 $app->sqlite->from_string('sqlite::temp:');
 $t->get_ok('/')->content_like(qr/No data yet, forgot to update and deploy\?/);
@@ -101,11 +88,6 @@ $app->ua->ioloop(Mojo::IOLoop->singleton);
 my $db = $app->sqlite->db;
 is $db->query('select count(*) from staging')->array->[0],  0, 'no packages';
 is $db->query('select count(*) from packages')->array->[0], 0, 'no packages';
-{
-  local $app->config->{username} = 'wrong';
-  eval { $app->updater->silent(1)->update };
-  like $@, qr/Authorization required/, 'right error';
-}
 $app->updater->silent(1)->update;
 is $db->query('select count(*) from staging')->array->[0],  4, 'four packages';
 is $db->query('select count(*) from packages')->array->[0], 0, 'no packages';

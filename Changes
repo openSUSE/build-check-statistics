@@ -1,4 +1,7 @@
 
+1.04  2016-11-22
+  - Changed updater to use the OBS API without authentication.
+
 1.03  2016-11-21
   - Added systemd unit files.
 

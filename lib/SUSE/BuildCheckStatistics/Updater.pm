@@ -26,25 +26,18 @@ use Term::ProgressBar;
 has 'app';
 has silent => 0;
 
-sub base {
-  my $self = shift;
-  my ($proto, $username, $password, $host)
-    = @{$self->app->config}{qw(protocol username password host)};
-  return "$proto://$username:$password\@$host";
-}
-
 sub update {
   my $self = shift;
 
   my $app      = $self->app;
   my $packages = $app->packages;
   $packages->cleanup;
-  my $base = $self->base;
+  my $obs = $app->config->{obs};
 
   # Repositories for projects
   my @repos;
   for my $project (@{$app->config->{projects}}) {
-    next unless my $res = $self->_fetch("$base/build/$project/_result");
+    next unless my $res = $self->_fetch("$obs/build/$project/_result");
     push @repos, [$project, @{$_}{qw(arch repository)}]
       for $res->dom->find('result')->each;
   }
@@ -53,7 +46,7 @@ sub update {
   for my $r (@repos) {
     my ($project, $arch, $repo) = @$r;
     my $res = $self->_fetch(
-      "$base/build/$project/$repo/$arch/_jobhistory?code=lastfailures");
+      "$obs/build/$project/$repo/$arch/_jobhistory?code=lastfailures");
     next unless $res;
 
     my %pkgs;
@@ -67,7 +60,7 @@ sub update {
       my $code = $pkgs{$pkg} eq 'unchanged' ? 'succeeded' : $pkgs{$pkg};
 
       my $res
-        = $self->_fetch("$base/build/$project/$repo/$arch/$pkg/rpmlint.log");
+        = $self->_fetch("$obs/build/$project/$repo/$arch/$pkg/rpmlint.log");
       my $log
         = SUSE::BuildCheckStatistics::Util::parse_log($res ? $res->body : '');
 
