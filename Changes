@@ -1,4 +1,7 @@
 
+1.05  2016-11-23
+  - Added example configuration files.
+
 1.04  2016-11-22
   - Changed updater to use the OBS API without authentication.
 
