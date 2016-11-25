@@ -1,4 +1,7 @@
 
+1.07  2016-11-25
+  - Improved PID file handling.
+
 1.06  2016-11-25
   - Fixed binary handling in Makefile.PL.
 

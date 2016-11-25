@@ -25,7 +25,7 @@ Just create a configuration file under `/etc/build_check_statistics.conf`.
   projects  => ['SomeProject', 'AnotherProject'],
   sqlite    => 'sqlite:/var/lib/build_check_statistics/test.db',
   hypnotoad => {
-    pid_file => '/var/run/build_check_statistics.pid'
+    pid_file => '/var/lib/build_check_statistics/hypnotoad.pid'
   }
 }
 ```

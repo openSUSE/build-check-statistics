@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=bcs
 Type=forking
-PIDFile=/var/run/build_check_statistics.pid
+PIDFile=/var/lib/build_check_statistics/hypnotoad.pid
 ExecStart=/usr/bin/hypnotoad /usr/bin/build_check_statistics
 ExecReload=/usr/bin/hypnotoad /usr/bin/build_check_statistics
 KillMode=process
