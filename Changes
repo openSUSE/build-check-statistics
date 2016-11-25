@@ -1,4 +1,7 @@
 
+1.06  2016-11-25
+  - Fixed binary handling in Makefile.PL.
+
 1.05  2016-11-24
   - Added example configuration files.
 

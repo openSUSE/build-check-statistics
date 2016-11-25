@@ -35,5 +35,6 @@ WriteMakefile(
     'Mojo::SQLite'      => '1.000',
     'Term::ProgressBar' => '2.17'
   },
-  test => {TESTS => 't/*.t t/*/*.t'}
+  EXE_FILES => ['bin/build_check_statistics'],
+  test      => {TESTS => 't/*.t t/*/*.t'}
 );
