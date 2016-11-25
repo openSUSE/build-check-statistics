@@ -49,3 +49,30 @@ Start the web server.
 ```
 $ build_check_statistics daemon -m production
 ```
+
+## openSUSE Installation
+
+There are also openSUSE packages available.
+
+```
+zypper ar -f obs://home:kraih/openSUSE_Tumbleweed bcs
+
+zypper in perl-SUSE-BuildCheckStatistics
+zypper in apache2
+
+vim /etc/build_check_statistics.conf
+
+systemctl start bcs-web.service
+systemctl start bcs-update.timer
+systemctl start bcs-update.service
+
+a2enmod headers
+a2enmod proxy
+a2enmod proxy_http
+
+cp /etc/apache2/vhosts.d/build_check_statistics.conf.template \
+  /etc/apache2/vhosts.d/build_check_statistics.conf
+vim /etc/apache2/vhosts.d/build_check_statistics.conf
+
+systemctl restart apache2
+```

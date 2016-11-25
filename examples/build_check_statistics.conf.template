@@ -3,8 +3,7 @@
   #ServerName your.server.name
 
   <Proxy *>
-    Order deny,allow
-    Allow from all
+    Require all granted
   </Proxy>
   ProxyRequests Off
   ProxyPreserveHost On
