@@ -22,6 +22,10 @@
 package SUSE::BuildCheckStatistics::Command::deploy;
 use Mojo::Base 'Mojolicious::Command';
 
-sub run { shift->app->packages->deploy }
+sub run {
+  my $self = shift;
+  $self->app->packages->deploy;
+  say 'Statistics have been deployed.';
+}
 
 1;

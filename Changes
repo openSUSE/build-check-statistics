@@ -1,4 +1,8 @@
 
+1.11  2016-11-28
+  - Removed SUSE_BCS_SILENT environment variable.
+  - Fixed terminal output bug in update command.
+
 1.10  2016-11-28
   - Added SUSE_BCS_SILENT environment variable.
   - Fixed bug where the update command would die if the terminal width could not

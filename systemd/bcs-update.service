@@ -4,4 +4,4 @@ Description=Build Check Statistics Update
 [Service]
 User=bcs
 Type=oneshot
-ExecStart=/usr/bin/build_check_statistics update ; /usr/bin/build_check_statistics deploy
+ExecStart=/usr/bin/build_check_statistics update -s ; /usr/bin/build_check_statistics deploy
