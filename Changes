@@ -1,4 +1,9 @@
 
+1.10  2016-11-28
+  - Added SUSE_BCS_SILENT environment variable.
+  - Fixed bug where the update command would die if the terminal width could not
+    be determined correctly.
+
 1.09  2016-11-25
   - Added more installation instructions.
   - Updated examples for Apache 2.4.

@@ -26,7 +26,7 @@ use SUSE::BuildCheckStatistics::Util;
 use Term::ProgressBar;
 
 has 'app';
-has silent => 0;
+has silent => sub { $ENV{SUSE_BCS_SILENT} };
 
 sub update {
   my $self = shift;
@@ -57,7 +57,7 @@ sub update {
     # Log files for packages
     say "$project-$arch-$repo:" unless $self->silent;
     my $progress = Term::ProgressBar->new(
-      {count => scalar keys %pkgs, silent => $self->silent});
+      {count => scalar keys %pkgs, term_width => 80, silent => $self->silent});
     for my $pkg (sort keys %pkgs) {
       my $code = $pkgs{$pkg} eq 'unchanged' ? 'succeeded' : $pkgs{$pkg};
 
