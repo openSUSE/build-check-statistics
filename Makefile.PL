@@ -31,7 +31,7 @@ WriteMakefile(
     },
   },
   PREREQ_PM => {
-    Mojolicious         => '7.08',
+    Mojolicious         => '7.10',
     'Mojo::SQLite'      => '1.000',
     'Term::ProgressBar' => '2.17'
   },

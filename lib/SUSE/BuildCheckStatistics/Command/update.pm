@@ -26,7 +26,7 @@ use Mojo::Util 'getopt';
 
 sub run {
   my ($self, @args) = @_;
-  getopt \@args, 's|silent' => sub { $self->app->updater->silent(1) });
+  getopt \@args, 's|silent' => sub { $self->app->updater->silent(1) };
   $self->app->updater->update;
   say 'Statistics have been updated.';
 }

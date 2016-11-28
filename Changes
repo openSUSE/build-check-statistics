@@ -1,4 +1,7 @@
 
+1.12  2016-11-28
+  - Improved command tests.
+
 1.11  2016-11-28
   - Removed SUSE_BCS_SILENT environment variable.
   - Fixed terminal output bug in update command.
