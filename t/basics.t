@@ -138,9 +138,9 @@ $t->get_ok('/')->text_like(title => qr/Build Check Statistics/)
   ->content_unlike(qr/No data yet, forgot to update and deploy\?/)
   ->content_like(qr/Last updated:/)
   ->text_like('td a[href=/rules/Foo/i586/Bar]'   => qr/Foo-i586-Bar/)
-  ->text_like('td a[href=/Foo/x86_64/Bar]'       => qr/2 packages/)
+  ->text_like('td a[href=/Foo/x86_64/Bar]'       => qr/1 package/)
   ->text_like('td a[href=/rules/Foo/x86_64/Bar]' => qr/Foo-x86_64-Bar/)
-  ->text_like('td a[href=/Foo/x86_64/Bar]'       => qr/2 packages/);
+  ->text_like('td a[href=/Foo/x86_64/Bar]'       => qr/1 package/);
 
 # Rules
 $t->get_ok('/rules/Foo/i586/Bar')

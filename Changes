@@ -1,5 +1,7 @@
 
-1.13  2016-11-28
+1.13  2016-12-02
+  - Improved dashboard to only show the number of packages that actually have
+    errors and/or warnings.
 
 1.12  2016-11-28
   - Improved command tests.

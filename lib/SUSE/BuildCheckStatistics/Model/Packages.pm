@@ -123,10 +123,11 @@ sub stage {
 
 sub stats {
   shift->sqlite->db->query(
-    'select project, arch, repository, count(package) as packages,
+    "select project, arch, repository, count(package) as packages,
        sum(json_array_length(errors)) as errors,
        sum(json_array_length(warnings)) as warnings
-     from packages group by project, arch, repository'
+     from packages where (errors != '[]' or warnings != '[]')
+     group by project, arch, repository"
   )->hashes;
 }
 
