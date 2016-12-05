@@ -36,7 +36,7 @@ has updater => sub {
   return $updater;
 };
 
-our $VERSION = '1.13';
+our $VERSION = '1.14';
 
 sub startup {
   my $self = shift;

@@ -1,4 +1,8 @@
 
+1.14  2016-12-05
+  - Improved SUSE::BuildCheckStatistics::Updater to filter out build results for
+    packages that no longer exist.
+
 1.13  2016-12-02
   - Improved dashboard to only show the number of packages that actually have
     errors and/or warnings.

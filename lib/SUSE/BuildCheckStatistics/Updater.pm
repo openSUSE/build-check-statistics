@@ -40,19 +40,22 @@ sub update {
   my @repos;
   for my $project (@{$app->config->{projects}}) {
     next unless my $res = $self->_fetch("$obs/build/$project/_result");
-    push @repos, [$project, @{$_}{qw(arch repository)}]
-      for $res->dom->find('result')->each;
+    for my $result ($res->dom->find('result')->each) {
+      my %pkgs = map { $_->{package} => 1 } $result->find('status')->each;
+      push @repos, [$project, @{$result}{qw(arch repository)}, \%pkgs];
+    }
   }
 
   # Packages for repositories
   for my $r (@repos) {
-    my ($project, $arch, $repo) = @$r;
+    my ($project, $arch, $repo, $pkgs) = @$r;
     my $res = $self->_fetch(
       "$obs/build/$project/$repo/$arch/_jobhistory?code=lastfailures");
     next unless $res;
 
     my %pkgs;
-    $pkgs{$_->{package}} = $_->{code} for $res->dom->find('jobhist')->each;
+    $pkgs{$_->{package}} = $_->{code}
+      for grep { $pkgs->{$_->{package}} } $res->dom->find('jobhist')->each;
 
     # Log files for packages
     my $progress = Term::ProgressBar->new(

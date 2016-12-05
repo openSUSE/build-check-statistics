@@ -42,6 +42,7 @@ EOF
 
 get '/build/Foo/Bar/i586/_jobhistory' => {data => <<'EOF'};
 <jobhistlist>
+    <jobhist package="no-longer-exists" code="succeeded" />
     <jobhist package="baz" code="failed" />
     <jobhist package="baz" code="succeeded" />
     <jobhist package="yada" code="succeeded" />
