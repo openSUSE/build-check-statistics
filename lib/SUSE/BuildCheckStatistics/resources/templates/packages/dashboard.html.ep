@@ -36,7 +36,7 @@
             <%= $project %>-<%= $arch %>-<%= $repo %>
           % }
         </td>
-        <td>
+        <td data-sortable="<%= $r->{packages} %>">
           % if ($r->{errors} || $r->{warnings}) {
             %= link_to_repo $project, $arch, $repo, $r->{packages}
           % }

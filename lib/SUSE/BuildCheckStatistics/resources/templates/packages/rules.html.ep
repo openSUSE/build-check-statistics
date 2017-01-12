@@ -22,7 +22,7 @@
       <tr>
         <td><%= $rule->{rule} %></td>
         <td class="<%= $rule->{type} %>s"><%= $rule->{type} %></td>
-        <td>
+        <td data-sortable="<%= $rule->{packages} %>">
           <%= link_to_repo $project, $arch, $repo, $rule->{packages},
             $rule->{rule} %>
         </td>

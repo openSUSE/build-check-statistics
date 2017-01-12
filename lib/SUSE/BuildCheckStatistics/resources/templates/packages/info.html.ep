@@ -25,9 +25,9 @@
             target => '_blank' %>
         </td>
         <td class="errors">error</td>
-        <td>
-          <%= link_to_repo @{$pkg}{qw(project arch repository)},
-            scalar @{$pkg->{rules}{$error}} - 1, $error %>
+        % my $num = @{$pkg->{rules}{$error}} - 1;
+        <td data-sortable="<%= $num %>">
+          <%= link_to_repo @{$pkg}{qw(project arch repository)}, $num, $error %>
         </td>
       </tr>
     % }
@@ -40,9 +40,10 @@
           <% end %>
         </td>
         <td class="warnings">warning</td>
-        <td>
-          <%= link_to_repo @{$pkg}{qw(project arch repository)},
-            scalar @{$pkg->{rules}{$warning}} - 1, $warning %>
+        % my $num = @{$pkg->{rules}{$warning}} - 1;
+        <td data-sortable="<%= $num %>">
+          <%= link_to_repo @{$pkg}{qw(project arch repository)}, $num,
+            $warning %>
         </td>
       </tr>
     % }

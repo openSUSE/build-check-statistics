@@ -6,6 +6,12 @@
     %= javascript '/tablefilter.js'
     %= javascript '/jquery.tablesorter.js'
     <script>
+      function tableExtractor(node) {
+        var sortable = $(node).data('sortable');
+        if (typeof sortable == 'undefined') { return $(node).text() }
+        console.log(sortable);
+        return sortable;
+      }
       $(document).ready(function () {
         $('form').submit(function() { return false });
         $('table').bind('sortEnd', function() {
@@ -16,7 +22,8 @@
             0: {sorter: false},
             1: {sorter: false }
           },
-          sortList: [[0,0]]
+          sortList: [[0,0]],
+          textExtraction: tableExtractor
         });
         $('table th:first-child').click(function() {
           $('thead input').focus();
