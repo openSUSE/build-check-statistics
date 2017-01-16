@@ -1,4 +1,9 @@
 
+1.15  2017-01-16
+  - Updated for Mojolicious 7.15.
+  - Fixed a bug on multiple pages where rows could not be ordered correctly by
+    number of packages.
+
 1.14  2016-12-05
   - Improved SUSE::BuildCheckStatistics::Updater to filter out build results for
     packages that no longer exist.

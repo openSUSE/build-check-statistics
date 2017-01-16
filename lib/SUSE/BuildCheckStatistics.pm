@@ -22,8 +22,8 @@
 package SUSE::BuildCheckStatistics;
 use Mojo::Base 'Mojolicious';
 
-use File::Basename 'dirname';
-use File::Spec::Functions 'catdir';
+use Mojo::File 'path';
+use Mojo::Home;
 use Mojo::SQLite;
 use Scalar::Util 'weaken';
 use SUSE::BuildCheckStatistics::Model::Packages;
@@ -36,16 +36,17 @@ has updater => sub {
   return $updater;
 };
 
-our $VERSION = '1.14';
+our $VERSION = '1.15';
 
 sub startup {
   my $self = shift;
 
   # Switch to installable home directory
-  my $home = $self->home;
-  $home->parse(catdir(dirname(__FILE__), 'BuildCheckStatistics', 'resources'));
-  $self->static->paths->[0]   = $home->rel_dir('public');
-  $self->renderer->paths->[0] = $home->rel_dir('templates');
+  my $home = Mojo::Home->new(
+    path(__FILE__)->dirname->child('BuildCheckStatistics', 'resources'));
+  $self->home($home);
+  $self->static->paths->[0]   = $home->child('public');
+  $self->renderer->paths->[0] = $home->child('templates');
 
   # Application specific commands
   push @{$self->commands->namespaces}, 'SUSE::BuildCheckStatistics::Command';
@@ -73,7 +74,7 @@ sub startup {
   );
 
   # Migrate automatically to latest version
-  my $path = $home->rel_file('migrations/build_check_statistics.sql');
+  my $path = $home->child('migrations', 'build_check_statistics.sql');
   $self->sqlite->auto_migrate(1)->migrations->name('build_check_statistics')
     ->from_file($path);
 
