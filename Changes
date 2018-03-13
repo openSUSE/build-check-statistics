@@ -1,4 +1,7 @@
 
+2.0  2018-03-10
+  - Modernized application layout.
+
 1.15  2017-01-16
   - Updated for Mojolicious 7.15.
   - Fixed a bug on multiple pages where rows could not be ordered correctly by

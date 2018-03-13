@@ -36,17 +36,10 @@ has updater => sub {
   return $updater;
 };
 
-our $VERSION = '1.15';
+our $VERSION = '2.0';
 
 sub startup {
   my $self = shift;
-
-  # Switch to installable home directory
-  my $home = Mojo::Home->new(
-    path(__FILE__)->dirname->child('BuildCheckStatistics', 'resources'));
-  $self->home($home);
-  $self->static->paths->[0]   = $home->child('public');
-  $self->renderer->paths->[0] = $home->child('templates');
 
   # Application specific commands
   push @{$self->commands->namespaces}, 'SUSE::BuildCheckStatistics::Command';
@@ -55,12 +48,7 @@ sub startup {
   $self->ua->on(start => sub { pop->res->max_message_size(134217728) });
 
   # No defaults
-  my $config = $self->plugin(
-    Config => {
-      default => {},
-      file    => $ENV{SUSE_BCS_CONFIG} || '/etc/build_check_statistics.conf'
-    }
-  );
+  my $config = $self->plugin('Config', {file => 'build_check_statistics.conf'});
   $self->plugin('SUSE::BuildCheckStatistics::Plugin::TagHelpers');
 
   # Model
@@ -74,6 +62,7 @@ sub startup {
   );
 
   # Migrate automatically to latest version
+  my $home = $self->home;
   my $path = $home->child('migrations', 'build_check_statistics.sql');
   $self->sqlite->auto_migrate(1)->migrations->name('build_check_statistics')
     ->from_file($path);

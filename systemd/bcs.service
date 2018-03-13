@@ -1,0 +1,12 @@
+[Unit]
+Description=Build Check Statistics web server
+After=network.target cavil.socket
+Requires=bcs.socket
+
+[Service]
+Type=simple
+ExecStart=/home/rpmlint/build_check_statistics/script/build_check_statistics prefork -w 4 -m production -l http://127.0.0.1?fd=3
+User=rpmlint
+
+[Install]
+WantedBy=multi-user.target
