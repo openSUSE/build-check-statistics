@@ -4,4 +4,4 @@ Description=Build Check Statistics update
 [Service]
 User=rpmlint
 Type=oneshot
-ExecStart=/home/rpmlint/build-check-statistics/script/build_check_statistics update -s ; /home/rpmlint/build-check-statistics/build_check_statistics deploy
+ExecStart=/home/rpmlint/build-check-statistics/script/build_check_statistics update -s ; /home/rpmlint/build-check-statistics/script/build_check_statistics deploy
