@@ -1,9 +1,0 @@
-[Unit]
-Description=Build Check Statistics socket
-PartOf=bcs.service
-
-[Socket]
-ListenStream=192.168.47.53:80
-
-[Install]
-WantedBy=sockets.target
