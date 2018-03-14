@@ -3,3 +3,7 @@ Description=Build Check Statistics update timer
 
 [Timer]
 OnCalendar=02:00:00
+Unit=bcs-update.service
+
+[Install]
+WantedBy=multi-user.target
