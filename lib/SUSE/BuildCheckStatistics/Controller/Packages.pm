@@ -57,7 +57,13 @@ sub repo {
     $self->param('rule'));
   @$pkgs = grep { !!@{$_->{errors}} || !!@{$_->{warnings}} } @$pkgs;
 
-  $self->render(pkgs => $pkgs);
+  $self->respond_to(
+    json => {json => $pkgs},
+    txt  => sub {
+      shift->render(text => join("\n", map { $_->{package} } @$pkgs));
+    },
+    any => {pkgs => $pkgs}
+  );
 }
 
 sub rules {

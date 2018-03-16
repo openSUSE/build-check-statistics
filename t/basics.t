@@ -79,11 +79,13 @@ my $daemon
 my $port = Mojo::IOLoop->acceptor($daemon->acceptors->[0])->port;
 
 # No data yet
-my $t      = Test::Mojo->new('SUSE::BuildCheckStatistics');
-my $config = {obs => "http://127.0.0.1:$port", projects => ['Foo']};
-my $app    = $t->app;
-$app->config($config);
-$app->sqlite->from_string('sqlite::temp:');
+my $config = {
+  obs      => "http://127.0.0.1:$port",
+  projects => ['Foo'],
+  sqlite   => 'sqlite::temp:'
+};
+my $t = Test::Mojo->new('SUSE::BuildCheckStatistics' => $config);
+my $app = $t->app;
 $t->get_ok('/')->content_like(qr/No data yet, forgot to update and deploy\?/);
 
 # Update and deploy
@@ -155,6 +157,12 @@ $t->get_ok('/Foo/i586/Bar')->text_like(title => qr/Build Check Statistics/)
 $t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags')->status_is(200)
   ->content_like(qr/Foo-i586-Bar: no-rpm-opt-flags/)
   ->text_like('a[href=/1]' => qr/baz/);
+$t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags&format=json')->status_is(200)
+  ->content_type_is('application/json;charset=UTF-8')
+  ->json_is('/1/package' => 'baz')->json_is('/1/errors' => ['test-123'])
+  ->json_is('/1/warnings' => ['no-rpm-opt-flags', 'whatever']);
+$t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags&format=txt')->status_is(200)
+  ->content_is("yada\nbaz");
 
 # Info
 $t->get_ok('/1')->text_like(title => qr/Build Check Statistics/)

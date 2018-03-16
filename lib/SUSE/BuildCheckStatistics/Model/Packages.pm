@@ -80,7 +80,7 @@ sub pkgs_for_repo {
   )->expand(json => [qw(errors warnings)])->hashes;
   $pkgs = $warnings->reduce(sub { $a->{$b->{id}} ||= $b; $a }, $pkgs);
 
-  return [values %$pkgs];
+  return [sort { $b->{id} <=> $a->{id} } values %$pkgs];
 }
 
 sub last_updated {
