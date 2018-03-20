@@ -1,0 +1,309 @@
+samba-libs.x86_64: I: binary-or-shlib-calls-gethostbyname /usr/lib64/samba/libsamba-sockets-samba4.so
+The binary calls gethostbyname(). Please port the code to use getaddrinfo().
+
+samba-libs.x86_64: W: call-to-mktemp /usr/lib64/samba/libkrb5samba-samba4.so
+This executable calls mktemp. As advised by the manpage (mktemp(3)), this
+function should be avoided. Some implementations are deeply insecure, and
+there is a race condition between the time of check and time of use (TOCTOU).
+See http://capec.mitre.org/data/definitions/29.html for details, and contact
+upstream to have this issue fixed.
+
+ctdb-tests.x86_64: W: dangling-symlink /usr/share/ctdb/tests/eventscripts/etc-ctdb/events.d /etc/ctdb/events.d
+ctdb-tests.x86_64: W: dangling-symlink /usr/share/ctdb/tests/eventscripts/etc-ctdb/functions /etc/ctdb/functions
+ctdb-tests.x86_64: W: dangling-symlink /usr/share/ctdb/tests/eventscripts/etc-ctdb/nfs-checks.d /etc/ctdb/nfs-checks.d
+ctdb-tests.x86_64: W: dangling-symlink /usr/share/ctdb/tests/eventscripts/etc-ctdb/nfs-linux-kernel-callout /etc/ctdb/nfs-linux-kernel-callout
+ctdb-tests.x86_64: W: dangling-symlink /usr/share/ctdb/tests/eventscripts/etc-ctdb/statd-callout /etc/ctdb/statd-callout
+ctdb-tests.x86_64: W: dangling-symlink /usr/share/ctdb/tests/onnode/functions /etc/ctdb/functions
+ctdb-tests.x86_64: W: dangling-symlink /usr/share/ctdb/tests/simple/functions /etc/ctdb/functions
+ctdb-tests.x86_64: W: dangling-symlink /usr/share/ctdb/tests/simple/nodes /etc/ctdb/nodes
+The target of the symbolic link does not exist within this package or its file
+based dependencies.  Verify spelling of the link target and that the target is
+included in a package in this package's dependency chain.
+
+samba-client.x86_64: W: empty-%pre
+libsamba-credentials-devel.x86_64: W: filename-too-long-for-joliet libsamba-credentials-devel-4.7.6+git.54.6e3276c9872-1.1.x86_64.rpm
+libsamba-hostconfig-devel.x86_64: W: filename-too-long-for-joliet libsamba-hostconfig-devel-4.7.6+git.54.6e3276c9872-1.1.x86_64.rpm
+This filename is too long to fit on a joliet filesystem (limit is 64 unicode
+chars).
+
+samba.src:1265: W: macro-in-comment %{DOCDIR}
+There is a unescaped macro after a shell style comment in the specfile. Macros
+are expanded everywhere, so check if it can cause a problem in this case and
+escape the macro with another leading % if appropriate.
+
+samba-libs.x86_64: W: missing-call-to-chdir-with-chroot /usr/lib64/samba/libsmbd-base-samba4.so
+This executable appears to call chroot without using chdir to change the
+current directory. This is likely an error and permits an attacker to break
+out of the chroot by using fchdir. While that's not always a security issue,
+this has to be checked.
+
+samba-pidl.x86_64: W: no-dependency-on perl-base 5.26.1
+samba-core-devel.x86_64: W: no-dependency-on samba-core*/samba-core-libs/libsamba-core*
+libdcerpc-binding0.x86_64: W: no-description-tag
+libdcerpc-samr0.x86_64: W: no-description-tag
+libndr-krb5pac0.x86_64: W: no-description-tag
+libndr-nbt0.x86_64: W: no-description-tag
+libndr-standard0.x86_64: W: no-description-tag
+libsamba-credentials0.x86_64: W: no-description-tag
+libsamba-errors0.x86_64: W: no-description-tag
+libsamba-hostconfig0.x86_64: W: no-description-tag
+libsamba-passdb0.x86_64: W: no-description-tag
+libsamba-policy0.x86_64: W: no-description-tag
+libsamba-util0.x86_64: W: no-description-tag
+libsamdb0.x86_64: W: no-description-tag
+The description of the package is empty or missing. To add it, insert a
+%description section in your spec file, add a textual description of the
+package after it, and rebuild the package.
+
+ctdb.x86_64: W: non-conffile-in-etc /etc/ctdb/events.d/README
+ctdb.x86_64: W: non-conffile-in-etc /etc/ctdb/functions
+ctdb.x86_64: W: non-conffile-in-etc /etc/ctdb/nfs-checks.d/README
+ctdb.x86_64: W: non-conffile-in-etc /etc/ctdb/notify.d/README
+samba.x86_64: W: non-conffile-in-etc /etc/slp.reg.d/samba.reg
+samba.x86_64: W: non-conffile-in-etc /etc/sysconfig/SuSEfirewall2.d/services/netbios-server
+samba-client.x86_64: W: non-conffile-in-etc /etc/sysconfig/SuSEfirewall2.d/services/samba-client
+samba.x86_64: W: non-conffile-in-etc /etc/sysconfig/SuSEfirewall2.d/services/samba-server
+A non-executable file in your package is being installed in /etc, but is not a
+configuration file. All non-executable files in /etc should be configuration
+files. Mark the file as %config in the spec file.
+
+samba-client.x86_64: W: non-etc-or-var-file-marked-as-conffile /usr/share/samba/LDAP/samba-nds.schema
+A file not in /etc or /var is marked as being a configuration file. Please put
+your conf files in /etc or /var.
+
+ctdb.x86_64: W: non-executable-script /etc/ctdb/events.d/10.external 644 /bin/sh 
+samba-python.x86_64: W: non-executable-script /usr/lib64/python2.7/site-packages/samba/subunit/run.py 644 /usr/bin/python 
+samba-python.x86_64: W: non-executable-script /usr/lib64/python2.7/site-packages/samba/tests/dcerpc/raw_protocol.py 644 /usr/bin/env python
+samba-python.x86_64: W: non-executable-script /usr/lib64/python2.7/site-packages/samba/tests/subunitrun.py 644 /usr/bin/env python
+ctdb-pcp-pmda.x86_64: W: non-executable-script /var/lib/pcp/pmdas/ctdb/Install 644 /bin/sh 
+ctdb-pcp-pmda.x86_64: W: non-executable-script /var/lib/pcp/pmdas/ctdb/Remove 644 /bin/sh 
+This text file contains a shebang or is located in a path dedicated for
+executables, but lacks the executable bits and cannot thus be executed.  If
+the file is meant to be an executable script, add the executable bits,
+otherwise remove the shebang or move the file elsewhere.
+
+samba-winbind.x86_64: W: non-standard-gid /var/lib/samba/winbindd_privileged winbind
+A file in this package is owned by an unregistered group id. To register the
+group, please branch the devel:openSUSE:Factory:rpmlint rpmlint package,  add
+the group to the "config" file and send a submitrequest.
+
+samba-python.x86_64: W: non-standard-group Applications/System
+samba-test.x86_64: W: non-standard-group Applications/System
+ctdb-tests.x86_64: W: non-standard-group Development/Tools
+samba-pidl.x86_64: W: non-standard-group Development/Tools
+The value of the Group tag in the package is not valid.  Valid groups are:
+"Amusements/Games/3D/Other", "Amusements/Games/3D/Race",
+"Amusements/Games/3D/Shoot", "Amusements/Games/3D/Simulation",
+"Amusements/Games/Action/Arcade", "Amusements/Games/Action/Breakout",
+"Amusements/Games/Action/Other", "Amusements/Games/Action/Race",
+"Amusements/Games/Action/Shoot", "Amusements/Games/Board/Card",
+"Amusements/Games/Board/Chess", "Amusements/Games/Board/Other",
+"Amusements/Games/Board/Pool", "Amusements/Games/Board/Puzzle",
+"Amusements/Games/Logic", "Amusements/Games/Other", "Amusements/Games/RPG",
+"Amusements/Games/Strategy/Other", "Amusements/Games/Strategy/Real Time",
+"Amusements/Games/Strategy/Turn Based", "Amusements/Teaching/Language",
+"Amusements/Teaching/Mathematics", "Amusements/Teaching/Other",
+"Amusements/Toys/Background", "Amusements/Toys/Clocks",
+"Amusements/Toys/Graphics", "Amusements/Toys/Other",
+"Amusements/Toys/Screensavers", "Development/Languages/C and C++",
+"Development/Languages/Fortran", "Development/Languages/Haskell",
+"Development/Languages/Java", "Development/Languages/Other",
+"Development/Languages/Perl", "Development/Languages/Python",
+"Development/Languages/Ruby", "Development/Languages/Rust",
+"Development/Languages/Scheme", "Development/Languages/Tcl",
+"Development/Libraries/C and C++", "Development/Libraries/Cross",
+"Development/Libraries/GNOME", "Development/Libraries/Haskell",
+"Development/Libraries/Java", "Development/Libraries/KDE",
+"Development/Libraries/Other", "Development/Libraries/Parallel",
+"Development/Libraries/Perl", "Development/Libraries/Python",
+"Development/Libraries/Rust", "Development/Libraries/Tcl",
+"Development/Libraries/X11", "Development/Libraries/YaST",
+"Development/Sources", "Development/Tools/Building",
+"Development/Tools/Debuggers", "Development/Tools/Doc Generators",
+"Development/Tools/GUI Builders", "Development/Tools/IDE",
+"Development/Tools/Navigators", "Development/Tools/Other",
+"Development/Tools/Version Control", "Documentation/Howto",
+"Documentation/HTML", "Documentation/Man", "Documentation/Other",
+"Documentation/SUSE", "Hardware/Camera", "Hardware/Fax", "Hardware/ISDN",
+"Hardware/Joystick", "Hardware/Mobile", "Hardware/Modem", "Hardware/Other",
+"Hardware/Palm", "Hardware/Printing", "Hardware/Psion", "Hardware/Radio",
+"Hardware/Scanner", "Hardware/TV", "Hardware/UPS", "Hardware/Wifi",
+"Metapackages", "Productivity/Archiving/Backup",
+"Productivity/Archiving/Compression", "Productivity/Clustering/Computing",
+"Productivity/Clustering/HA", "Productivity/Databases/Clients",
+"Productivity/Databases/Servers", "Productivity/Databases/Tools",
+"Productivity/File utilities", "Productivity/Graphics/3D Editors",
+"Productivity/Graphics/Bitmap Editors", "Productivity/Graphics/CAD",
+"Productivity/Graphics/Convertors", "Productivity/Graphics/Other",
+"Productivity/Graphics/Vector Editors", "Productivity/Graphics/Viewers",
+"Productivity/Graphics/Visualization/Graph",
+"Productivity/Graphics/Visualization/Other",
+"Productivity/Graphics/Visualization/Raytracers", "Productivity/Hamradio/Fax",
+"Productivity/Hamradio/Logging", "Productivity/Hamradio/Morse",
+"Productivity/Hamradio/Other", "Productivity/Hamradio/Packet",
+"Productivity/Hamradio/Psk31", "Productivity/Hamradio/Satellite",
+"Productivity/Multimedia/CD/Grabbers", "Productivity/Multimedia/CD/Players",
+"Productivity/Multimedia/CD/Record", "Productivity/Multimedia/Other",
+"Productivity/Multimedia/Sound/Editors and Convertors",
+"Productivity/Multimedia/Sound/Midi", "Productivity/Multimedia/Sound/Mixers",
+"Productivity/Multimedia/Sound/Players",
+"Productivity/Multimedia/Sound/Utilities",
+"Productivity/Multimedia/Sound/Visualization",
+"Productivity/Multimedia/Video/Editors and Convertors",
+"Productivity/Multimedia/Video/Players",
+"Productivity/Networking/AOLInstantMessenger",
+"Productivity/Networking/Archie", "Productivity/Networking/Boot/Clients",
+"Productivity/Networking/Boot/Servers",
+"Productivity/Networking/Boot/Utilities",
+"Productivity/Networking/Diagnostic", "Productivity/Networking/DNS/Servers",
+"Productivity/Networking/DNS/Utilities",
+"Productivity/Networking/Email/Clients",
+"Productivity/Networking/Email/Mailinglists",
+"Productivity/Networking/Email/Servers",
+"Productivity/Networking/Email/Utilities", "Productivity/Networking/File-
+Sharing", "Productivity/Networking/Ftp/Clients",
+"Productivity/Networking/Ftp/Servers", "Productivity/Networking/ICQ",
+"Productivity/Networking/Instant Messenger", "Productivity/Networking/IRC",
+"Productivity/Networking/LDAP/Clients",
+"Productivity/Networking/LDAP/Servers",
+"Productivity/Networking/LDAP/Utilities", "Productivity/Networking/Napster",
+"Productivity/Networking/News/Clients",
+"Productivity/Networking/News/Servers",
+"Productivity/Networking/News/Utilities", "Productivity/Networking/NFS",
+"Productivity/Networking/NIS", "Productivity/Networking/Novell",
+"Productivity/Networking/Other", "Productivity/Networking/PPP",
+"Productivity/Networking/Radius/Clients",
+"Productivity/Networking/Radius/Servers", "Productivity/Networking/Routing",
+"Productivity/Networking/Samba", "Productivity/Networking/Security",
+"Productivity/Networking/SSH", "Productivity/Networking/System",
+"Productivity/Networking/Talk/Clients",
+"Productivity/Networking/Talk/Servers",
+"Productivity/Networking/Web/Browsers",
+"Productivity/Networking/Web/Frontends", "Productivity/Networking/Web/Proxy",
+"Productivity/Networking/Web/Servers",
+"Productivity/Networking/Web/Utilities", "Productivity/Office/Dictionary",
+"Productivity/Office/Finance", "Productivity/Office/Management",
+"Productivity/Office/Organizers", "Productivity/Office/Other",
+"Productivity/Office/Spreadsheets", "Productivity/Office/Suite",
+"Productivity/Office/Word Processor", "Productivity/Other",
+"Productivity/Publishing/DocBook", "Productivity/Publishing/HTML/Editors",
+"Productivity/Publishing/HTML/Tools", "Productivity/Publishing/Other",
+"Productivity/Publishing/PDF", "Productivity/Publishing/Presentation",
+"Productivity/Publishing/PS", "Productivity/Publishing/SGML",
+"Productivity/Publishing/TeX/Base", "Productivity/Publishing/TeX/Fonts",
+"Productivity/Publishing/TeX/Frontends", "Productivity/Publishing/Texinfo",
+"Productivity/Publishing/TeX/Utilities", "Productivity/Publishing/Troff",
+"Productivity/Publishing/Word", "Productivity/Publishing/XML",
+"Productivity/Scientific/Astronomy", "Productivity/Scientific/Chemistry",
+"Productivity/Scientific/Electronics", "Productivity/Scientific/Math",
+"Productivity/Scientific/Other", "Productivity/Scientific/Physics",
+"Productivity/Security", "Productivity/Telephony/Clients",
+"Productivity/Telephony/H323/Clients", "Productivity/Telephony/H323/Servers",
+"Productivity/Telephony/H323/Utilities", "Productivity/Telephony/Servers",
+"Productivity/Telephony/SIP/Clients", "Productivity/Telephony/SIP/Servers",
+"Productivity/Telephony/SIP/Utilities", "Productivity/Telephony/Utilities",
+"Productivity/Text/Convertors", "Productivity/Text/Editors",
+"Productivity/Text/Spell", "Productivity/Text/Utilities", "System/Base",
+"System/Benchmark", "System/Boot", "System/Console", "System/Daemons",
+"System/Emulators/Other", "System/Emulators/PC", "System/Fhs",
+"System/Filesystems", "System/GUI/GNOME", "System/GUI/KDE", "System/GUI/LXDE",
+"System/GUI/Other", "System/GUI/XFCE", "System/I18n/Chinese",
+"System/I18n/Japanese", "System/I18n/Korean", "System/Kernel",
+"System/Libraries", "System/Localization", "System/Management",
+"System/Monitoring", "System/Packages", "System/Shells", "System/Sound
+Daemons", "System/X11/Displaymanagers", "System/X11/Fonts",
+"System/X11/Icons", "System/X11/Servers/XF86_3", "System/X11/Servers/XF86_4",
+"System/X11/Terminals", "System/X11/Utilities", "System/YaST".
+
+libsamba-passdb0.x86_64: W: obsolete-not-provided libpdb0
+libsmbclient0.x86_64: W: obsolete-not-provided libsmbclient
+samba.x86_64: W: obsolete-not-provided samba-32bit
+samba-client.x86_64: W: obsolete-not-provided samba-client-gplv2
+samba-doc.noarch: W: obsolete-not-provided samba-doc-gplv2
+samba.x86_64: W: obsolete-not-provided samba-gplv3
+samba-client.x86_64: W: obsolete-not-provided samba-gplv3-client
+samba-doc.noarch: W: obsolete-not-provided samba-gplv3-doc
+samba-winbind.x86_64: W: obsolete-not-provided samba-gplv3-winbind
+If a package is obsoleted by a compatible replacement, the obsoleted package
+should also be provided in order to not cause unnecessary dependency breakage.
+If the obsoleting package is not a compatible replacement for the old one,
+leave out the Provides.
+
+samba-pidl.x86_64: W: perl5-naming-policy-not-applied /usr/lib/perl5/vendor_perl/5.26.1/Parse
+This package doesn't respect the naming policy for perl5 packages. Its name
+should match the regular expression ^perl(-|$).
+
+samba-client.x86_64: W: postin-without-tmpfile-creation /usr/lib/tmpfiles.d/samba.conf
+Please use the %tmpfiles_create macro in %post for each of your tmpfiles.d
+files
+
+ctdb-tests.x86_64: W: script-without-shebang /usr/share/ctdb/tests/eventscripts/etc-ctdb/rc.local
+ctdb-tests.x86_64: W: script-without-shebang /usr/share/ctdb/tests/simple/14_ctdb_statistics.sh
+This text file has executable bits set or is located in a path dedicated for
+executables, but lacks a shebang and cannot thus be executed.  If the file is
+meant to be an executable script, add the shebang, otherwise remove the
+executable bits or move the file elsewhere.
+
+libsamba-passdb-devel.x86_64: W: self-obsoletion libpdb-devel obsoletes libpdb-devel
+The package obsoletes itself.  This is known to cause errors in various tools
+and should thus be avoided, usually by using appropriately versioned Obsoletes
+and/or Provides and avoiding unversioned ones.
+
+samba-kdc.x86_64: W: shlib-policy-missing-suffix
+samba-winbind.x86_64: W: shlib-policy-missing-suffix
+Your package containing shared libraries does not end in a digit and should
+probably be split.
+
+samba-winbind.x86_64: W: suse-logrotate-log-dir-not-packaged /var/log/samba
+samba.x86_64: W: suse-logrotate-log-dir-not-packaged /var/log/samba
+Please add the specified directory to the file list to be able to check
+permissions
+
+samba.x86_64: W: suse-missing-rclink samba-ad-dc
+The package contains an init script or systemd service file but lacks the
+symlink /usr/sbin/rcFOO -> /usr/sbin/service
+
+samba-client.x86_64: W: tmpfile-not-in-filelist /var/run/samba
+please add the specified file to your %files section as %ghost so users can
+easily query who created the file, it gets uninstalled on package removal and
+finally other rpmlint checks see it
+
+samba-doc.noarch: W: wrong-file-end-of-line-encoding /usr/share/doc/packages/samba/examples/validchars/msdos70.out
+samba-doc.noarch: W: wrong-file-end-of-line-encoding /usr/share/doc/packages/samba/examples/validchars/nwdos70.out
+samba-doc.noarch: W: wrong-file-end-of-line-encoding /usr/share/doc/packages/samba/examples/validchars/readme
+samba-doc.noarch: W: wrong-file-end-of-line-encoding /usr/share/doc/packages/samba/examples/validchars/validchr.c
+samba-doc.noarch: W: wrong-file-end-of-line-encoding /usr/share/doc/packages/samba/examples/validchars/validchr.com
+This file has wrong end-of-line encoding, usually caused by creation or
+modification on a non-Unix system. It could prevent it from being displayed
+correctly in some circumstances.
+
+samba-client.x86_64: W: zero-length /usr/share/samba/templates/default-global
+samba-client.x86_64: W: zero-length /usr/share/samba/templates/default-groups
+samba-client.x86_64: W: zero-length /usr/share/samba/templates/default-homes
+samba-client.x86_64: W: zero-length /usr/share/samba/templates/default-print$
+samba-client.x86_64: W: zero-length /usr/share/samba/templates/default-printers
+samba-client.x86_64: W: zero-length /usr/share/samba/templates/default-profiles
+samba-client.x86_64: W: zero-length /usr/share/samba/templates/default-users
+ctdb-pcp-pmda.x86_64: E: devel-file-in-non-devel-package (Badness: 50) /var/lib/pcp/pmdas/ctdb/domain.h
+A file that is needed only e.g. when developing or building software is
+included in a non-devel package. These files should go in devel packages.
+
+samba-client.x86_64: E: env-script-interpreter (Badness: 9) /usr/bin/findsmb /usr/bin/env perl
+samba-pidl.x86_64: E: env-script-interpreter (Badness: 9) /usr/bin/pidl /usr/bin/env perl
+samba-kdc.x86_64: E: env-script-interpreter (Badness: 9) /usr/bin/samba-tool /usr/bin/env python
+samba-kdc.x86_64: E: env-script-interpreter (Badness: 9) /usr/sbin/samba_dnsupdate /usr/bin/env python
+samba-kdc.x86_64: E: env-script-interpreter (Badness: 9) /usr/sbin/samba_kcc /usr/bin/env python
+samba-kdc.x86_64: E: env-script-interpreter (Badness: 9) /usr/sbin/samba_spnupdate /usr/bin/env python
+samba-kdc.x86_64: E: env-script-interpreter (Badness: 9) /usr/sbin/samba_upgradedns /usr/bin/env python
+samba-doc.noarch: E: env-script-interpreter (Badness: 9) /usr/share/doc/packages/samba/examples/logon/ntlogon/ntlogon.py /usr/bin/env python
+samba-doc.noarch: E: env-script-interpreter (Badness: 9) /usr/share/doc/packages/samba/examples/scripts/shares/python/generate_parm_table.py /usr/bin/env python
+samba-doc.noarch: E: env-script-interpreter (Badness: 9) /usr/share/doc/packages/samba/examples/scripts/shares/python/modify_samba_config.py /usr/bin/env python
+This script uses 'env' as an interpreter. For the rpm runtime dependency
+detection to work, the shebang #!/usr/bin/env python  needs to be patched into
+#!/usr/bin/python  otherwise the package dependency generator merely adds a
+dependency on /usr/bin/env rather than the actual interpreter /usr/bin/python.
+Alternatively, if the file should not be executed, then ensure that it is not
+marked as executable or don't install it in a path that is reserved for
+executables.
+
+55 packages and 0 specfiles checked; 11 errors, 80 warnings.

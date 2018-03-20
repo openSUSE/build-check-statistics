@@ -1,0 +1,190 @@
+virtualbox.x86_64: I: binary-or-shlib-calls-gethostbyname /usr/lib/virtualbox/VBoxDD.so
+virtualbox.x86_64: I: binary-or-shlib-calls-gethostbyname /usr/lib/virtualbox/VBoxRT.so
+virtualbox.x86_64: I: binary-or-shlib-calls-gethostbyname /usr/lib/virtualbox/VBoxXPCOM.so
+virtualbox.x86_64: I: binary-or-shlib-calls-gethostbyname /usr/lib/virtualbox/components/VBoxRT.so
+virtualbox.x86_64: I: binary-or-shlib-calls-gethostbyname /usr/lib/virtualbox/components/VBoxXPCOM.so
+virtualbox-guest-tools.x86_64: I: binary-or-shlib-calls-gethostbyname /usr/sbin/VBoxService
+The binary calls gethostbyname(). Please port the code to use getaddrinfo().
+
+virtualbox-qt.x86_64: W: description-shorter-than-summary
+virtualbox-websrv.x86_64: W: description-shorter-than-summary
+The package description should be longer than the summary. be a bit more
+verbose, please.
+
+virtualbox-websrv.x86_64: W: empty-%post
+virtualbox.x86_64: W: empty-%posttrans
+virtualbox-vnc.x86_64: W: explicit-lib-dependency libvncserver0
+You must let rpm find the library dependencies by itself. Do not put unneeded
+explicit Requires: tags.
+
+virtualbox-websrv.x86_64: W: incoherent-init-script-name vboxweb-service ('virtualbox-websrv', 'virtualbox-websrvd')
+The init script name should be the same as the package name in lower case, or
+one with 'd' appended if it invokes a process by that name.
+
+virtualbox.src:564: W: macro-in-comment %_target_cpu
+virtualbox.src:254: W: macro-in-comment %kernel_module_package
+virtualbox.src:662: W: macro-in-comment %{DEBIAN}
+virtualbox.src:662: W: macro-in-comment %{NOLSB}
+virtualbox.src:662: W: macro-in-comment %{PACKAGE}
+virtualbox.src:590: W: macro-in-comment %{_libdir}
+virtualbox.src:599: W: macro-in-comment %{_libdir}
+virtualbox.src:599: W: macro-in-comment %{_libdir}
+virtualbox.src:564: W: macro-in-comment %{_prefix}
+virtualbox.src:606: W: macro-in-comment %{_vbox_instdir}
+virtualbox.src:590: W: macro-in-comment %{buildroot}
+virtualbox.src:599: W: macro-in-comment %{buildroot}
+There is a unescaped macro after a shell style comment in the specfile. Macros
+are expanded everywhere, so check if it can cause a problem in this case and
+escape the macro with another leading % if appropriate.
+
+virtualbox.x86_64: W: missing-call-to-setgroups-before-setuid /usr/lib/virtualbox/VBoxHeadless
+virtualbox.x86_64: W: missing-call-to-setgroups-before-setuid /usr/lib/virtualbox/VBoxNetDHCP
+virtualbox.x86_64: W: missing-call-to-setgroups-before-setuid /usr/lib/virtualbox/VBoxNetNAT
+virtualbox-qt.x86_64: W: missing-call-to-setgroups-before-setuid /usr/lib/virtualbox/VBoxSDL
+virtualbox-qt.x86_64: W: missing-call-to-setgroups-before-setuid /usr/lib/virtualbox/VirtualBox
+This executable is calling setuid and setgid without setgroups or initgroups.
+There is a high probability this means it didn't relinquish all groups, and
+this would be a potential security issue to be fixed. Seek POS36-C on the web
+for details about the problem.
+
+virtualbox-websrv.x86_64: W: missing-lsb-keyword Short-Description in /etc/init.d/vboxweb-service
+The package contains an init script that does not contain one of the LSB init
+script comment block convention keywords that are recommendable for all init
+scripts.  If there is nothing to add to a keyword's value, include the keyword
+in the script with an empty value.  Note that as of version 3.2, the LSB
+specification does not mandate presence of any keywords.
+
+virtualbox.src: W: name-repeated-in-summary C VirtualBox
+virtualbox.x86_64: W: name-repeated-in-summary C VirtualBox
+The name of the package is repeated in its summary.  This is often redundant
+information and looks silly in various programs' output.  Make the summary
+brief and to the point without including redundant information in it.
+
+virtualbox-qt.x86_64: W: non-conffile-in-etc /etc/udev/rules.d/60-vboxdrv.rules
+virtualbox-guest-tools.x86_64: W: non-conffile-in-etc /etc/udev/rules.d/60-vboxguest.rules
+A non-executable file in your package is being installed in /etc, but is not a
+configuration file. All non-executable files in /etc should be configuration
+files. Mark the file as %config in the spec file.
+
+virtualbox.x86_64: W: non-standard-gid /usr/lib/virtualbox/VBoxHeadless vboxusers
+virtualbox.x86_64: W: non-standard-gid /usr/lib/virtualbox/VBoxNetAdpCtl vboxusers
+virtualbox.x86_64: W: non-standard-gid /usr/lib/virtualbox/VBoxNetDHCP vboxusers
+virtualbox.x86_64: W: non-standard-gid /usr/lib/virtualbox/VBoxNetNAT vboxusers
+virtualbox-qt.x86_64: W: non-standard-gid /usr/lib/virtualbox/VBoxPermissionMessage vboxusers
+virtualbox-qt.x86_64: W: non-standard-gid /usr/lib/virtualbox/VBoxSDL vboxusers
+virtualbox-qt.x86_64: W: non-standard-gid /usr/lib/virtualbox/VBoxUSB_DevRules vboxusers
+virtualbox-qt.x86_64: W: non-standard-gid /usr/lib/virtualbox/VirtualBox vboxusers
+A file in this package is owned by an unregistered group id. To register the
+group, please branch the devel:openSUSE:Factory:rpmlint rpmlint package,  add
+the group to the "config" file and send a submitrequest.
+
+virtualbox-guest-kmp-default.x86_64: W: obsolete-not-provided virtualbox-guest-kmp-desktop
+virtualbox-guest-kmp-default.x86_64: W: obsolete-not-provided virtualbox-guest-kmp-trace
+virtualbox-guest-kmp-default.x86_64: W: obsolete-not-provided virtualbox-guest-kmp-xen
+virtualbox-host-kmp-default.x86_64: W: obsolete-not-provided virtualbox-host-kmp-desktop
+virtualbox-host-kmp-default.x86_64: W: obsolete-not-provided virtualbox-host-kmp-trace
+virtualbox-host-kmp-default.x86_64: W: obsolete-not-provided virtualbox-host-kmp-xen
+If a package is obsoleted by a compatible replacement, the obsoleted package
+should also be provided in order to not cause unnecessary dependency breakage.
+If the obsoleting package is not a compatible replacement for the old one,
+leave out the Provides.
+
+virtualbox.x86_64: W: permissions-incorrect /usr/lib/virtualbox/VBoxHeadless has mode 04750 but should be 0755
+virtualbox.x86_64: W: permissions-incorrect /usr/lib/virtualbox/VBoxNetAdpCtl has mode 04750 but should be 0755
+virtualbox.x86_64: W: permissions-incorrect /usr/lib/virtualbox/VBoxNetDHCP has mode 04750 but should be 0755
+virtualbox-qt.x86_64: W: permissions-incorrect /usr/lib/virtualbox/VBoxSDL has mode 04750 but should be 0755
+virtualbox-qt.x86_64: W: permissions-incorrect /usr/lib/virtualbox/VirtualBox has mode 04750 but should be 0755
+please use the %attr macro to set the correct permissions.
+
+virtualbox-qt.x86_64: W: position-independent-executable-suggested /usr/lib/virtualbox/VBoxPermissionMessage
+virtualbox-qt.x86_64: W: position-independent-executable-suggested /usr/lib/virtualbox/VBoxTestOGL
+virtualbox-qt.x86_64: W: position-independent-executable-suggested /usr/lib/virtualbox/VBoxUSB_DevRules
+virtualbox.x86_64: W: position-independent-executable-suggested /usr/lib/virtualbox/VBoxXPCOMIPCD
+This executable should be position independent (all binaries should).  Check
+that it is built with -fPIE/-fpie in compiler flags and -pie in linker flags.
+
+virtualbox.src:482: W: rpm-buildroot-usage %build install -D -m 644 "COPYING" "%{buildroot}%{_datadir}/licenses/LICENSE.vnc"
+virtualbox.src:480: W: rpm-buildroot-usage %build install -D -m 644 VNC-*.vbox-extpack "%{buildroot}%{_datadir}/virtualbox/extensions/VNC-%{version}.vbox-extpack"
+virtualbox.src:479: W: rpm-buildroot-usage %build mkdir -p "%{buildroot}%{_datadir}/virtualbox/extensions/"
+$RPM_BUILD_ROOT should not be touched during %build or %prep stage, as it may
+break short circuit builds.
+
+virtualbox-guest-x11.x86_64: W: shared-lib-calls-exit /usr/lib64/VBoxEGL.so exit@GLIBC_2.2.5
+virtualbox-guest-x11.x86_64: W: shared-lib-calls-exit /usr/lib64/VBoxOGL.so exit@GLIBC_2.2.5
+This library package calls exit() or _exit(), probably in a non-fork()
+context. Doing so from a library is strongly discouraged - when a library
+function calls exit(), it prevents the calling program from handling the
+error, reporting it to the user, closing files properly, and cleaning up any
+state that the program has. It is preferred for the library to return an
+actual error code and let the calling program decide how to handle the
+situation.
+
+virtualbox-guest-tools.x86_64: W: standard-dir-owned-by-package /media
+This package owns a directory that is part of the standard hierarchy, which
+can lead to default directory permissions or ownerships being changed to
+something non-standard.
+
+virtualbox-websrv.x86_64: W: suse-deprecated-init-script /etc/init.d/vboxweb-service
+SysV init scripts are deprecated. Please migrate to systemd service files.
+
+virtualbox-guest-source.noarch: W: suse-filelist-forbidden-fhs23 /usr/src/kernel-modules is not allowed in FHS 2.3
+virtualbox-host-source.noarch: W: suse-filelist-forbidden-fhs23 /usr/src/kernel-modules is not allowed in FHS 2.3
+see http://www.pathname.com/fhs/ for a better location
+
+virtualbox-qt.x86_64: W: suse-filelist-forbidden-udev-userdirs /etc/udev/rules.d/60-vboxdrv.rules is not allowed in SUSE
+virtualbox-guest-tools.x86_64: W: suse-filelist-forbidden-udev-userdirs /etc/udev/rules.d/60-vboxguest.rules is not allowed in SUSE
+This directory is for user files,                       use
+/usr/lib/udev/rules.d
+
+virtualbox-guest-tools.x86_64: W: suse-missing-rclink vboxadd-service
+The package contains an init script or systemd service file but lacks the
+symlink /usr/sbin/rcFOO -> /usr/sbin/service
+
+virtualbox-guest-tools.x86_64: W: suse-obsolete-insserv-requirement
+virtualbox-websrv.x86_64: W: suse-obsolete-insserv-requirement
+virtualbox.x86_64: W: suse-obsolete-insserv-requirement
+In systemd based distributions insserv is obsolete. Please remove dependencies
+on insserv.
+
+virtualbox.x86_64: W: systemd-service-without-service_add_post vboxes.service
+virtualbox.x86_64: W: systemd-service-without-service_add_post vboxes.service
+The package contains a systemd service but doesn't contain a %post with a call
+to service_add_post.
+
+virtualbox-guest-tools.x86_64: W: systemd-service-without-service_add_pre vboxadd-service.service
+virtualbox-guest-tools.x86_64: W: systemd-service-without-service_add_pre vboxadd-service.service
+virtualbox.x86_64: W: systemd-service-without-service_add_pre vboxes.service
+virtualbox.x86_64: W: systemd-service-without-service_add_pre vboxes.service
+The package contains a systemd service but doesn't contain a %pre with a call
+to service_add_pre.
+
+virtualbox.x86_64: W: systemd-service-without-service_del_postun vboxes.service
+virtualbox.x86_64: W: systemd-service-without-service_del_postun vboxes.service
+The package contains a systemd service but doesn't contain a %postun with a
+call to service_del_postun.
+
+virtualbox.x86_64: W: systemd-service-without-service_del_preun vboxes.service
+virtualbox.x86_64: W: systemd-service-without-service_del_preun vboxes.service
+The package contains a systemd service but doesn't contain a %preun with a
+call to service_del_preun.
+
+virtualbox-qt.x86_64: W: udev-rule-in-etc /etc/udev/rules.d/60-vboxdrv.rules
+virtualbox-guest-tools.x86_64: W: udev-rule-in-etc /etc/udev/rules.d/60-vboxguest.rules
+A udev rule has been packaged in /etc/udev/rules.d. These rules should be
+installed in the system rules dir instead.
+
+virtualbox.x86_64: W: unstripped-binary-or-object /usr/lib/virtualbox/VBoxDDR0.r0
+virtualbox.x86_64: W: unstripped-binary-or-object /usr/lib/virtualbox/VBoxDDRC.rc
+virtualbox.x86_64: W: unstripped-binary-or-object /usr/lib/virtualbox/VMMR0.r0
+virtualbox.x86_64: W: unstripped-binary-or-object /usr/lib/virtualbox/VMMRC.rc
+stripping debug info from binaries happens automatically according to global
+project settings. So there's normally no need to manually strip binaries. Left
+over unstripped binaries could therefore indicate a bug in the automatic
+stripping process.
+
+virtualbox-guest-kmp-default.x86_64: W: useless-provides virtualbox-guest-kmp
+virtualbox-host-kmp-default.x86_64: W: useless-provides virtualbox-host-kmp
+This package provides 2 times the same capacity. It should only provide it
+once.
+
+14 packages and 0 specfiles checked; 0 errors, 84 warnings.

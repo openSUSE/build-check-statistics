@@ -25,12 +25,16 @@ use Mojo::Base -strict;
 sub parse_log {
   my $log = shift;
 
-  my (%errors, %warnings);
-  while ($log =~ /^\S+ (E|W): (\S+)(?:$| )/gm) {
-    $1 eq 'E' ? ($errors{$2}++) : ($warnings{$2}++);
+  my (%errors, %info, %warnings);
+  while ($log =~ /^\S+ (E|I|W): (\S+)(?:$| )/gm) {
+    $1 eq 'E' ? ($errors{$2}++) : $1 eq 'I' ? ($info{$2}++) : ($warnings{$2}++);
   }
 
-  return {errors => [sort keys %errors], warnings => [sort keys %warnings]};
+  return {
+    errors   => [sort keys %errors],
+    info     => [sort keys %info],
+    warnings => [sort keys %warnings]
+  };
 }
 
 1;
