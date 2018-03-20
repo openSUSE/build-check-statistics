@@ -34,8 +34,11 @@ sub deploy {
   $db->query('delete from packages');
   $db->query(
     'insert into packages (
-       arch, code, errors, package, project, repository, updated, warnings)
-     select arch, code, errors, package, project, repository, updated, warnings
+       arch, code, errors, info, package, project, repository, updated,
+       warnings
+     )
+     select arch, code, errors, info, package, project, repository, updated,
+       warnings
      from staging'
   );
   $db->query('delete from staging');
@@ -115,9 +118,9 @@ sub stage {
   my ($self, $project, $repo, $arch, $pkg, $code, $log) = @_;
   $self->sqlite->db->query(
     'insert into staging (
-       arch, code, errors, package, project, repository, warnings)
-     values (?, ?, ?, ?, ?, ?, ?)', $arch, $code, {json => $log->{errors}},
-    $pkg, $project, $repo, {json => $log->{warnings}}
+       arch, code, errors, info, package, project, repository, warnings)
+     values (?, ?, ?, ?, ?, ?, ?, ?)', $arch, $code, {json => $log->{errors}},
+    {json => $log->{info}}, $pkg, $project, $repo, {json => $log->{warnings}}
   );
 }
 

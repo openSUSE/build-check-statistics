@@ -25,3 +25,7 @@ create table if not exists staging (
 -- 1 down
 drop table if exists packages;
 drop table if exists staging;
+
+-- 2 up
+alter table packages add column info text;
+alter table staging add column info text;

@@ -58,7 +58,9 @@ EOF
 
 get '/build/Foo/Bar/i586/baz/rpmlint.log' => {data => <<'EOF'};
 baz-0.i586: W: no-rpm-opt-flags
+baz-0.i586: I: just-some-info
 baz-0.i586: E: test-123
+baz-0.i586: I: just-some-more-info
 baz-0.i586: W: whatever
 EOF
 
@@ -102,14 +104,15 @@ is $db->query('select count(*) from packages')->array->[0], 4, 'four packages';
 
 # Deployed
 my $results
-  = $db->query('select id, code, package, errors, warnings from packages')
-  ->expand(json => [qw(errors warnings)]);
+  = $db->query('select id, code, package, errors, info, warnings from packages')
+  ->expand(json => [qw(errors info warnings)]);
 my $all = [
   {
     id       => 1,
     code     => 'succeeded',
     package  => 'baz',
     errors   => ['test-123'],
+    info     => ['just-some-info', 'just-some-more-info'],
     warnings => ['no-rpm-opt-flags', 'whatever']
   },
   {
@@ -117,6 +120,7 @@ my $all = [
     code     => 'succeeded',
     package  => 'yada',
     errors   => [],
+    info     => [],
     warnings => ['no-rpm-opt-flags']
   },
   {
@@ -124,6 +128,7 @@ my $all = [
     code     => 'succeeded',
     package  => 'baz',
     errors   => [],
+    info     => [],
     warnings => []
   },
   {
@@ -131,6 +136,7 @@ my $all = [
     code     => 'failed',
     package  => 'yada',
     errors   => [],
+    info     => [],
     warnings => ['no-rpm-opt-flags']
   }
 ];
