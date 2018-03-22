@@ -44,4 +44,13 @@
       </tr>
     % }
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="5">
+        Other formats:
+        <%= link_to JSON => url_with->query({format => 'json'}) %>,
+        <%= link_to Text => url_with->query({format => 'txt'}) %>
+      </td>
+    <tr>
+  </tfoot>
 </table>
