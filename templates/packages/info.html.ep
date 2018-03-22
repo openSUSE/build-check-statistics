@@ -47,5 +47,21 @@
         </td>
       </tr>
     % }
+    % for my $info (@{$pkg->{info}}) {
+      <tr>
+        <td>
+          <%= link_to log => {id => $pkg->{id}},
+            target => '_blank' => begin %>
+            <%= $info %>
+          <% end %>
+        </td>
+        <td class="info">info</td>
+        % my $num = @{$pkg->{rules}{$info}} - 1;
+        <td data-sortable="<%= $num %>">
+          <%= link_to_repo @{$pkg}{qw(project arch repository)}, $num,
+            $info %>
+        </td>
+      </tr>
+    % }
   </tbody>
 </table>

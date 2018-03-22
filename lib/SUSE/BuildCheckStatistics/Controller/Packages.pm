@@ -55,7 +55,8 @@ sub repo {
   my $pkgs
     = $self->packages->pkgs_for_repo(@{$self->stash}{qw(project arch repo)},
     $self->param('rule'));
-  @$pkgs = grep { !!@{$_->{errors}} || !!@{$_->{warnings}} } @$pkgs;
+  @$pkgs = grep { !!@{$_->{errors}} || !!@{$_->{info}} || !!@{$_->{warnings}} }
+    @$pkgs;
 
   $self->respond_to(
     json => {json => $pkgs},

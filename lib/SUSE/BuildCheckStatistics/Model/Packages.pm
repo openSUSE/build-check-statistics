@@ -50,12 +50,12 @@ sub pkg_for_id {
 
   my $db = $self->sqlite->db;
   my $hash = $db->query('select * from packages where id = ?', $id)
-    ->expand(json => [qw(errors warnings)])->hash;
+    ->expand(json => [qw(errors info warnings)])->hash;
 
   my ($project, $arch, $repo) = @{$hash}{qw(project arch repository)};
   $hash->{rules} = {
     map { $_ => $self->_pkgs_for_rule($project, $arch, $repo, $_) }
-    map {@$_} @{$hash}{qw(errors warnings)},
+    map {@$_} @{$hash}{qw(errors info warnings)},
   };
 
   return $hash;
@@ -66,21 +66,30 @@ sub pkgs_for_repo {
 
   my $db     = $self->sqlite->db;
   my $errors = $db->query(
-    'select packages.id, package, code, errors, warnings from packages,
+    'select packages.id, package, code, errors, info, warnings from packages,
        json_each(packages.errors)
      where project = ? and arch = ? and repository = ?
        and json_each.value = coalesce(?, json_each.value)
      group by project, arch, repository, package', $project, $arch, $repo, $rule
-  )->expand(json => [qw(errors warnings)])->hashes;
+  )->expand(json => [qw(errors info warnings)])->hashes;
   my $pkgs = $errors->reduce(sub { $a->{$b->{id}} = $b; $a }, {});
 
+  my $info = $db->query(
+    'select packages.id, package, code, errors, info, warnings from packages,
+       json_each(packages.info)
+     where project = ? and arch = ? and repository = ?
+       and json_each.value = coalesce(?, json_each.value)
+     group by project, arch, repository, package', $project, $arch, $repo, $rule
+  )->expand(json => [qw(errors info warnings)])->hashes;
+  $pkgs = $info->reduce(sub { $a->{$b->{id}} ||= $b; $a }, $pkgs);
+
   my $warnings = $db->query(
-    'select packages.id, package, code, errors, warnings from packages,
+    'select packages.id, package, code, errors, info, warnings from packages,
        json_each(packages.warnings)
      where project = ? and arch = ? and repository = ?
        and json_each.value = coalesce(?, json_each.value)
      group by project, arch, repository, package', $project, $arch, $repo, $rule
-  )->expand(json => [qw(errors warnings)])->hashes;
+  )->expand(json => [qw(errors info warnings)])->hashes;
   $pkgs = $warnings->reduce(sub { $a->{$b->{id}} ||= $b; $a }, $pkgs);
 
   return [sort { $b->{id} <=> $a->{id} } values %$pkgs];
@@ -102,6 +111,13 @@ sub rules_for_repo {
      from packages, json_each(packages.errors) as e
      where project = ? and arch = ? and repository = ?
      group by e.value", $project, $arch, $repo
+  )->hashes->each;
+
+  push @rules, $db->query(
+    "select i.value as rule, count(package) as packages, 'info' as type
+     from packages, json_each(packages.info) as i
+     where project = ? and arch = ? and repository = ?
+     group by i.value", $project, $arch, $repo
   )->hashes->each;
 
   push @rules, $db->query(
@@ -128,8 +144,9 @@ sub stats {
   shift->sqlite->db->query(
     "select project, arch, repository, count(package) as packages,
        sum(json_array_length(errors)) as errors,
+       sum(json_array_length(info)) as info,
        sum(json_array_length(warnings)) as warnings
-     from packages where (errors != '[]' or warnings != '[]')
+     from packages where (errors != '[]' or info != '[]' or warnings != '[]')
      group by project, arch, repository"
   )->hashes;
 }
@@ -140,6 +157,12 @@ sub _pkgs_for_rule {
   my $db       = $self->sqlite->db;
   my @packages = $db->query(
     'select package from packages, json_each(packages.errors)
+     where project = ? and arch = ? and repository = ?
+       and json_each.value = ?', $project, $arch, $repo, $rule
+  )->arrays->map(sub { $_->[0] })->each;
+
+  push @packages, $db->query(
+    'select package from packages, json_each(packages.info)
      where project = ? and arch = ? and repository = ?
        and json_each.value = ?', $project, $arch, $repo, $rule
   )->arrays->map(sub { $_->[0] })->each;

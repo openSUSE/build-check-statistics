@@ -10,13 +10,14 @@
             placeholder="Filter" type="text">
         </form>
       </th>
-      <th colspan="3"><%= title %></th>
+      <th colspan="4"><%= title %></th>
     </tr>
     <tr>
       <th>Package<span class="arrow"></span></th>
       <th>State<span class="arrow"></span></th>
       <th>Errors<span class="arrow"></span></th>
       <th>Warnings<span class="arrow"></span></th>
+      <th>Info<span class="arrow"></span></th>
     </tr>
   </thead>
   <tbody>
@@ -35,6 +36,10 @@
         % my $warnings = scalar @{$p->{warnings}};
         %= t 'td', scalar $warnings ? (class => 'warnings') : () => begin
           <%= $warnings %>
+        % end
+        % my $info = scalar @{$p->{info}};
+        %= t 'td', scalar $info ? (class => 'info') : () => begin
+          <%= $info %>
         % end
       </tr>
     % }

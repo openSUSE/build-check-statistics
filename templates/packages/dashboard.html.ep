@@ -9,13 +9,14 @@
             onkeyup="tablefilter(this)" placeholder="Filter" type="text">
         </form>
       </th>
-      <th colspan="3">Last updated: <%= title %></th>
+      <th colspan="4">Last updated: <%= title %></th>
     </tr>
     <tr>
       <th>Repository<span class="arrow"></span></th>
       <th>Packages<span class="arrow"></span></th>
       <th>Errors<span class="arrow"></span></th>
       <th>Warnings<span class="arrow"></span></th>
+      <th>Info<span class="arrow"></span></th>
     </tr>
   </thead>
   <tbody>
@@ -49,6 +50,9 @@
         % end
         %= t 'td', $r->{warnings} ? (class => 'warnings') : () => begin
           %= $r->{warnings}
+        % end
+        %= t 'td', $r->{info} ? (class => 'info') : () => begin
+          %= $r->{info}
         % end
       </tr>
     % }
