@@ -3,6 +3,18 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   margin: 50px;
 }
+footer, footer a {
+  color: #4ac0b4;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  bottom: 0;
+  height: 60px;
+  padding-top: 15px;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+}
 table {
   background: #ffffff;
   border-collapse: collapse;
@@ -91,4 +103,7 @@ td a {
 .errors { color: #ff7878 }
 .invisible { display: none }
 .odd { background: #f9f9f9 }
+.table-footer {
+  text-align: right;
+}
 .warnings { color: #81c13b }

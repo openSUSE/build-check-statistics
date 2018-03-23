@@ -46,7 +46,7 @@
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="5">
+      <td class="table-footer" colspan="5">
         Other formats:
         <%= link_to JSON => url_with->query({format => 'json'}) %>,
         <%= link_to Text => url_with->query({format => 'txt'}) %>
