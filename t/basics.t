@@ -143,7 +143,7 @@ my $all = [
 is_deeply $results->hashes->to_array, $all, 'right structure';
 
 # Dashboard
-$t->get_ok('/')->text_like(title => qr/Build Check Statistics/)
+$t->get_ok('/')->status_is(200)->text_like(title => qr/Build Check Statistics/)
   ->content_unlike(qr/No data yet, forgot to update and deploy\?/)
   ->content_like(qr/Last updated:/)
   ->text_like('td a[href=/rules/Foo/i586/Bar]'   => qr/Foo-i586-Bar/)
@@ -152,13 +152,19 @@ $t->get_ok('/')->text_like(title => qr/Build Check Statistics/)
   ->text_like('td a[href=/Foo/x86_64/Bar]'       => qr/1 package/);
 
 # Rules
-$t->get_ok('/rules/Foo/i586/Bar')
+$t->get_ok('/rules/Foo/i586/Bar')->status_is(200)
   ->text_like(title => qr/Build Check Statistics/)
   ->content_like(qr/Foo-i586-Bar/)
   ->text_like('a[href=/Foo/i586/Bar?rule=no-rpm-opt-flags]' => qr/2 packages/);
+$t->get_ok('/rules/Foo/i586/Bar?format=json')->status_is(200)
+  ->json_is('/1/rule', 'just-some-info');
+$t->get_ok('/rules/Foo/i586/Bar?format=txt')->status_is(200)
+  ->content_is(
+  "test-123\njust-some-info\njust-some-more-info\nno-rpm-opt-flags\nwhatever");
 
 # Packages
-$t->get_ok('/Foo/i586/Bar')->text_like(title => qr/Build Check Statistics/)
+$t->get_ok('/Foo/i586/Bar')->status_is(200)
+  ->text_like(title => qr/Build Check Statistics/)
   ->content_like(qr/Foo-i586-Bar/)->text_like('a[href=/2]' => qr/yada/);
 $t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags')->status_is(200)
   ->content_like(qr/Foo-i586-Bar: no-rpm-opt-flags/)
@@ -174,6 +180,10 @@ $t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags&format=txt')->status_is(200)
 $t->get_ok('/1')->text_like(title => qr/Build Check Statistics/)
   ->content_like(qr/Foo-i586-Bar: baz/)
   ->text_like('a[href=/Foo/i586/Bar?rule=no-rpm-opt-flags]' => qr/1 package/);
+$t->get_ok('/1?format=json')->status_is(200)->json_is('/arch', 'i586');
+$t->get_ok('/1?format=txt')->status_is(200)
+  ->content_is(
+  "just-some-info\njust-some-more-info\nno-rpm-opt-flags\ntest-123\nwhatever");
 
 # Log
 $t->get_ok('/log/1')->status_is(200)

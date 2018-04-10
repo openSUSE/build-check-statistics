@@ -64,4 +64,13 @@
       </tr>
     % }
   </tbody>
+  <tfoot>
+    <tr>
+      <td class="table-footer" colspan="5">
+        Other formats:
+        <%= link_to JSON => url_with->query({format => 'json'}) %>,
+        <%= link_to Text => url_with->query({format => 'txt'}) %>
+      </td>
+    <tr>
+  </tfoot>
 </table>

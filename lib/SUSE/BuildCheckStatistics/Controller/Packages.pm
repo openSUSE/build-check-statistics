@@ -30,7 +30,18 @@ sub dashboard {
 
 sub info {
   my $self = shift;
+
+  my $pkg = $self->packages->pkg_for_id($self->stash('id'));
+
   $self->render(pkg => $self->packages->pkg_for_id($self->stash('id')));
+
+  $self->respond_to(
+    json => {json => $pkg},
+    txt  => sub {
+      shift->render(text => join("\n", sort keys %{$pkg->{rules}}));
+    },
+    any => {pkg => $pkg}
+  );
 }
 
 sub log {
@@ -69,9 +80,17 @@ sub repo {
 
 sub rules {
   my $self = shift;
+
   my $rules
     = $self->packages->rules_for_repo(@{$self->stash}{qw(project arch repo)});
-  $self->render(rules => $rules);
+
+  $self->respond_to(
+    json => {json => $rules},
+    txt  => sub {
+      shift->render(text => join("\n", map { $_->{rule} } @$rules));
+    },
+    any => {rules => $rules}
+  );
 }
 
 1;
