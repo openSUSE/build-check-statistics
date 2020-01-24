@@ -84,9 +84,8 @@ sub _fetch {
   my ($self, $url) = @_;
 
   my $tx = $self->app->ua->get($url);
-  if (my $res = $tx->success) { return $res }
+  return $tx->res unless my $err = $tx->error;
 
-  my $err = $tx->error;
   if (my $code = $err->{code}) {
     die "Authorization required.\n" if $code eq '401';
     return undef;
