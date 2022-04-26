@@ -33,8 +33,6 @@ sub info {
 
   my $pkg = $self->packages->pkg_for_id($self->stash('id'));
 
-  $self->render(pkg => $self->packages->pkg_for_id($self->stash('id')));
-
   $self->respond_to(
     json => {json => $pkg},
     txt  => sub {

@@ -86,7 +86,7 @@ my $config = {
   projects => ['Foo'],
   sqlite   => 'sqlite::temp:'
 };
-my $t = Test::Mojo->new('SUSE::BuildCheckStatistics' => $config);
+my $t   = Test::Mojo->new('SUSE::BuildCheckStatistics' => $config);
 my $app = $t->app;
 $t->get_ok('/')->content_like(qr/No data yet, forgot to update and deploy\?/);
 
@@ -112,7 +112,7 @@ my $all = [
     code     => 'succeeded',
     package  => 'baz',
     errors   => ['test-123'],
-    info     => ['just-some-info', 'just-some-more-info'],
+    info     => ['just-some-info',   'just-some-more-info'],
     warnings => ['no-rpm-opt-flags', 'whatever']
   },
   {
@@ -156,9 +156,9 @@ $t->get_ok('/rules/Foo/i586/Bar')->status_is(200)
   ->text_like(title => qr/Build Check Statistics/)
   ->content_like(qr/Foo-i586-Bar/)
   ->text_like('a[href=/Foo/i586/Bar?rule=no-rpm-opt-flags]' => qr/2 packages/);
-$t->get_ok('/rules/Foo/i586/Bar?format=json')->status_is(200)
+$t->get_ok('/rules/Foo/i586/Bar?_format=json')->status_is(200)
   ->json_is('/1/rule', 'just-some-info');
-$t->get_ok('/rules/Foo/i586/Bar?format=txt')->status_is(200)
+$t->get_ok('/rules/Foo/i586/Bar?_format=txt')->status_is(200)
   ->content_is(
   "test-123\njust-some-info\njust-some-more-info\nno-rpm-opt-flags\nwhatever");
 
@@ -169,19 +169,19 @@ $t->get_ok('/Foo/i586/Bar')->status_is(200)
 $t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags')->status_is(200)
   ->content_like(qr/Foo-i586-Bar: no-rpm-opt-flags/)
   ->text_like('a[href=/1]' => qr/baz/);
-$t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags&format=json')->status_is(200)
+$t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags&_format=json')->status_is(200)
   ->content_type_is('application/json;charset=UTF-8')
-  ->json_is('/1/package' => 'baz')->json_is('/1/errors' => ['test-123'])
+  ->json_is('/1/package'  => 'baz')->json_is('/1/errors' => ['test-123'])
   ->json_is('/1/warnings' => ['no-rpm-opt-flags', 'whatever']);
-$t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags&format=txt')->status_is(200)
+$t->get_ok('/Foo/i586/Bar?rule=no-rpm-opt-flags&_format=txt')->status_is(200)
   ->content_is("yada\nbaz");
 
 # Info
 $t->get_ok('/1')->text_like(title => qr/Build Check Statistics/)
   ->content_like(qr/Foo-i586-Bar: baz/)
   ->text_like('a[href=/Foo/i586/Bar?rule=no-rpm-opt-flags]' => qr/1 package/);
-$t->get_ok('/1?format=json')->status_is(200)->json_is('/arch', 'i586');
-$t->get_ok('/1?format=txt')->status_is(200)
+$t->get_ok('/1?_format=json')->status_is(200)->json_is('/arch', 'i586');
+$t->get_ok('/1?_format=txt')->status_is(200)
   ->content_is(
   "just-some-info\njust-some-more-info\nno-rpm-opt-flags\ntest-123\nwhatever");
 
